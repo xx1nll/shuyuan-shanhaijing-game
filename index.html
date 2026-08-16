@@ -174,6 +174,259 @@
       white-space: nowrap;
     }
     #hotbar-tabs .tab:hover { color: var(--pale); border-color: rgba(255,255,255,0.12); }
+    /* —— Workspace: 島嶼 vs 異獸 —— */
+    body[data-workspace="beast"] #viewport,
+    body[data-workspace="beast"] #hotbar-wrap,
+    body[data-workspace="beast"] #hint,
+    body[data-workspace="beast"] #panel-left,
+    body[data-workspace="beast"] #panel-right,
+    body[data-workspace="beast"] .island-only { display: none !important; }
+    body[data-workspace="island"] #beast-studio { display: none !important; }
+    body[data-workspace="beast"] #beast-studio { display: flex; }
+
+    .workspace-switch {
+      display: flex;
+      gap: 3px;
+      padding: 2px;
+      margin-right: 6px;
+      background: rgba(0,0,0,0.35);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+    }
+    .workspace-switch .ws-btn {
+      border: 1px solid transparent;
+      background: transparent;
+      color: #a89880;
+      font-family: var(--font-ui);
+      font-size: 0.78rem;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .workspace-switch .ws-btn:hover { color: var(--pale); }
+    .workspace-switch .ws-btn.on {
+      background: rgba(201, 168, 76, 0.28);
+      border-color: rgba(201, 168, 76, 0.55);
+      color: #fff;
+    }
+
+    #beast-studio {
+      position: fixed;
+      inset: 0;
+      z-index: 12;
+      display: none;
+      flex-direction: row;
+      background: #0e0d0b;
+      padding-top: 44px;
+    }
+    #beast-stage {
+      flex: 1;
+      min-width: 0;
+      position: relative;
+      background: radial-gradient(ellipse at 50% 42%, #2a2620 0%, #12100e 70%);
+    }
+    #beast-stage canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    #beast-stage .stage-hint {
+      position: absolute;
+      left: 16px;
+      bottom: 14px;
+      font-size: 0.72rem;
+      color: rgba(200,188,160,0.55);
+      pointer-events: none;
+      letter-spacing: 0.06em;
+    }
+    #beast-tweak-bar {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 40;
+      pointer-events: auto;
+      max-width: calc(100% - 24px);
+      padding: 6px;
+      border-radius: 8px;
+      background: rgba(20, 18, 14, 0.78);
+      border: 1px solid rgba(201, 168, 76, 0.28);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(201, 168, 76, 0.28);
+    }
+    #beast-tweak-bar .xf {
+      flex: 0 0 auto;
+      min-width: 4.5em;
+      padding: 7px 10px;
+    }
+    #beast-dock {
+      width: min(360px, 92vw);
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      background: var(--hud);
+      border-left: 1px solid var(--hud-border);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+    }
+    #beast-lore {
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid rgba(201,168,76,0.22);
+      flex-shrink: 0;
+    }
+    #beast-lore .beast-title {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    #beast-lore .chimera-desc {
+      margin: 0 0 10px;
+      max-height: 7.5em;
+      overflow-y: auto;
+    }
+    #beast-tabs {
+      display: flex;
+      gap: 2px;
+      padding: 8px 10px 0;
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    #beast-tabs .btab {
+      flex: 1;
+      border: 1px solid transparent;
+      background: transparent;
+      color: #a89880;
+      font-family: var(--font-ui);
+      font-size: 0.72rem;
+      padding: 8px 2px;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+    }
+    #beast-tabs .btab:hover { color: var(--pale); }
+    #beast-tabs .btab.on {
+      color: #fff;
+      background: rgba(201,168,76,0.18);
+      border-color: rgba(201,168,76,0.35);
+      border-bottom-color: transparent;
+    }
+    #beast-panels {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px 14px 20px;
+    }
+    #beast-panels .btab-panel { display: none; }
+    #beast-panels .btab-panel.on { display: block; }
+    #beast-panels .group-label {
+      font-size: 0.72rem;
+      color: #8a8070;
+      margin: 10px 0 4px;
+    }
+    #beast-panels .group-label:first-child { margin-top: 0; }
+
+    .chimera-desc {
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: var(--bone);
+      background: rgba(0,0,0,0.28);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-family: "Songti SC", "Noto Serif TC", "STSong", serif;
+    }
+    .chimera-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin: 6px 0;
+      font-size: 0.8rem;
+      color: #c8bca8;
+    }
+    .chimera-row .stepper {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .chimera-row .stepper button {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(0,0,0,0.35);
+      color: var(--bone);
+      cursor: pointer;
+      font-size: 1rem;
+      line-height: 1;
+    }
+    .chimera-parts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 4px 0 10px;
+    }
+    .chimera-parts button {
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.3);
+      color: #a89880;
+      font-size: 0.75rem;
+      padding: 6px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-family: var(--font-ui);
+    }
+    .chimera-parts button.on {
+      color: var(--bone);
+      border-color: rgba(212, 168, 90, 0.55);
+      background: rgba(160, 100, 40, 0.35);
+    }
+    .chimera-traits {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 4px 0 10px;
+    }
+    .chimera-traits label {
+      font-size: 0.75rem;
+      color: #a89880;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      background: rgba(0,0,0,0.22);
+      cursor: pointer;
+    }
+    .face-draw-wrap { margin: 6px 0 10px; }
+    .face-draw-wrap canvas {
+      width: min(100%, 200px);
+      height: auto;
+      aspect-ratio: 1;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 8px;
+      background: #e8dcc8;
+      cursor: crosshair;
+      touch-action: none;
+      display: block;
+    }
+    .face-draw-tools {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-top: 6px;
+      flex-wrap: wrap;
+    }
+    .face-draw-tools input[type="color"] {
+      width: 36px; height: 28px;
+      border: none;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+    }
+    @media (max-width: 720px) {
+      #beast-studio { flex-direction: column; }
+      #beast-stage { flex: 0 0 42vh; }
+      #beast-dock { width: 100%; flex: 1; border-left: none; border-top: 1px solid var(--hud-border); }
+    }
+
     #hotbar-tabs .tab.active {
       background: rgba(201, 168, 76, 0.28);
       border-color: rgba(201, 168, 76, 0.55);
@@ -641,7 +894,7 @@
     }
   </style>
 </head>
-<body>
+<body data-workspace="beast">
   <div id="boot-screen" aria-live="polite">
     <div class="boot-title">蓬莱筑境</div>
     <div class="boot-sub">載入中…</div>
@@ -652,28 +905,61 @@
 
   <div id="hud-top">
     <div class="brand">蓬莱筑境</div>
-    <button class="hud-btn edit-only mode-btn active" data-mode="build" title="Build">🏔 建造</button>
-    <button class="hud-btn edit-only" id="btn-list" title="Item list">清單</button>
-    <button class="hud-btn edit-only" id="btn-multiselect" title="Multi-select mode">多選</button>
-    <button class="hud-btn edit-only" id="btn-group" title="Group selection">成組</button>
-    <button class="hud-btn edit-only" id="btn-ungroup" title="Ungroup">解組</button>
-    <button class="hud-btn edit-only" data-mode="code" id="btn-code" title="Code">📜</button>
-    <button class="hud-btn edit-only" id="btn-undo" title="Undo" disabled>↩</button>
-    <button class="hud-btn edit-only" id="btn-redo" title="Redo" disabled>↪</button>
-    <button class="hud-btn edit-only" id="btn-focus" title="Focus camera on selection">◎ 聚焦</button>
-    <button class="hud-btn edit-only" id="btn-copy" title="Copy">📋</button>
+    <div class="workspace-switch" role="tablist" aria-label="工作區">
+      <button type="button" class="ws-btn" data-workspace="island" title="島嶼編輯">🏝 島嶼</button>
+      <button type="button" class="ws-btn on" data-workspace="beast" title="異獸造物">🐉 異獸</button>
+    </div>
+    <button class="hud-btn edit-only mode-btn active island-only" data-mode="build" title="Build">🏔 建造</button>
+    <button class="hud-btn edit-only island-only" id="btn-list" title="Item list">清單</button>
+    <button class="hud-btn edit-only island-only" id="btn-multiselect" title="Multi-select mode">多選</button>
+    <button class="hud-btn edit-only island-only" id="btn-group" title="Group selection">成組</button>
+    <button class="hud-btn edit-only island-only" id="btn-ungroup" title="Ungroup">解組</button>
+    <button class="hud-btn edit-only island-only" data-mode="code" id="btn-code" title="Code">📜</button>
+    <button class="hud-btn edit-only" id="btn-undo" title="Undo (Ctrl+Z)" disabled>↩</button>
+    <button class="hud-btn edit-only" id="btn-redo" title="Redo (Ctrl+Shift+Z)" disabled>↪</button>
+    <button class="hud-btn edit-only island-only" id="btn-focus" title="Focus camera on selection">◎ 聚焦</button>
+    <button class="hud-btn edit-only island-only" id="btn-copy" title="Copy">📋</button>
     <button class="hud-btn" id="btn-gfx" title="Graphics settings">⚙ 畫面</button>
-    <button class="hud-btn play" id="btn-play" title="Play">▶ 遊歷</button>
+    <button class="hud-btn play island-only" id="btn-play" title="Play">▶ 遊歷</button>
   </div>
 
-  <div id="hotbar-wrap" title="Drag onto terrain, or click then click terrain">
+  <div id="beast-studio" aria-hidden="true">
+    <div id="beast-stage">
+      <canvas id="beast-preview-canvas"></canvas>
+      <div id="beast-tweak-bar" class="xform-bar">
+        <button type="button" class="xf lock-on" id="beast-btn-lock" data-beast-lock="1" title="Lock">🔓 解鎖</button>
+      </div>
+      <div class="stage-hint" id="beast-stage-hint">左鍵旋轉 · 右鍵平移 · 滾輪縮放</div>
+    </div>
+    <aside id="beast-dock">
+      <div id="beast-lore">
+        <div class="beast-title">異獸造物</div>
+        <div class="chimera-desc" id="beast-desc">有獸焉，其名曰未名異獸。</div>
+        <div class="ctrl" style="margin-bottom:0">
+          <label>其名曰</label>
+          <input type="text" id="beast-name" maxlength="24" placeholder="異獸之名"
+            style="width:100%;box-sizing:border-box;padding:6px 10px;border-radius:6px;border:1px solid #3a3830;background:#1a1916;color:var(--bone);font-size:0.9rem"/>
+        </div>
+      </div>
+      <div id="beast-tabs" role="tablist">
+        <button type="button" class="btab on" data-btab="body">身</button>
+        <button type="button" class="btab" data-btab="head">首</button>
+        <button type="button" class="btab" data-btab="foot">足</button>
+        <button type="button" class="btab" data-btab="tail">尾</button>
+        <button type="button" class="btab" data-btab="nature">性情</button>
+      </div>
+      <div id="beast-panels"></div>
+    </aside>
+  </div>
+
+  <div id="hotbar-wrap" class="island-only" title="Drag onto terrain, or click then click terrain">
     <div id="hotbar-tabs"></div>
     <div id="hotbar">
       <div id="hotbar-track"></div>
     </div>
     <div id="hotbar-rail" aria-hidden="true"><div id="hotbar-rail-spacer"></div></div>
   </div>
-  <div id="hint">拖放到島上 · 開「多選」或清單勾選後「成組」</div>
+  <div id="hint" class="island-only">拖放到島上 · 開「多選」或清單勾選後「成組」</div>
 
   <aside class="drawer hidden" id="panel-left">
     <h2 id="left-title">場景清單</h2>
@@ -737,6 +1023,8 @@
         <button type="button" class="hud-btn" id="btn-play-sit" title="Sit (C)">坐下 C</button>
         <button type="button" class="hud-btn" id="btn-play-gfx" title="Graphics">⚙ 畫面</button>
       </div>
+      <div style="font-weight:700;color:var(--bone);margin:8px 0 4px">人物皮膚</div>
+      <div class="row-btns" id="play-skin-row"></div>
     </div>
     <div class="hud-bl">
       <div class="play-state" id="play-state" data-state="待機">待機</div>
@@ -799,6 +1087,8 @@ import { UnifiedTransformControls } from './unified-gizmo.js';
 import { installPlants } from './plants.js';
 import { installStructures } from './structures.js';
 import { installAnimals } from './animals.js';
+import { installCharacters } from './characters.js';
+import { installChimera } from './chimera.js?v=45';
 
 // ═══════════════════════════════════════════════════════════
 // Editable terrain — 0.25 world-units per cell (smooth paths / sculpt curves)
@@ -890,16 +1180,18 @@ function bindNameField(root, onCommit) {
 
 const HOTBAR_TABS = [
   { id: 'sculpt',  label: '手動塑形' },
-  { id: 'terrain', label: '地形' },
-  { id: 'trees',   label: '木' },
-  { id: 'flowers', label: '草花' },
-  { id: 'beasts',  label: '獸' },
-  { id: 'birds',   label: '禽' },
-  { id: 'aqua',    label: '水族' },
-  { id: 'crawl',   label: '爬蟲' },
-  { id: 'decor',   label: '景物' },
-  { id: 'build',   label: '建築' },
-  { id: 'myth',    label: '神異' },
+  { id: 'terrain', label: '地形', hidden: true },
+  // Hidden while models are being replaced — presets + makers stay registered
+  { id: 'trees',   label: '木',   hidden: true },
+  { id: 'flowers', label: '草花', hidden: true },
+  { id: 'beasts',  label: '獸',   hidden: true },
+  { id: 'birds',   label: '禽',   hidden: true },
+  { id: 'aqua',    label: '水族', hidden: true },
+  { id: 'crawl',   label: '爬蟲', hidden: true },
+  { id: 'chars',   label: '人物', hidden: true },
+  { id: 'decor',   label: '景物', hidden: true },
+  { id: 'build',   label: '建築', hidden: true },
+  { id: 'myth',    label: '神異', hidden: true },
 ];
 
 const PRESETS = [
@@ -976,6 +1268,24 @@ let isFlyingMob = () => false;
 let isSwimMob = () => false;
 let mobHeadY = () => 1;
 let mobSpeed = () => 1;
+/** NPC helpers — filled after installCharacters() (separate from animals) */
+let isNpc = () => false;
+let npcHeadY = () => 1;
+let npcSpeed = () => 1;
+/** Wander / placement brain shared by animals + NPCs */
+function usesMobBrain(type) {
+  return isMob(type) || isNpc(type);
+}
+function entityHeadY(type, scale, props) {
+  if (isNpc(type)) return npcHeadY(type, scale);
+  if (typeof isChimera === 'function' && isChimera(type)) return chimeraHeadY(props, scale);
+  return mobHeadY(type, scale);
+}
+function entitySpeed(type, scale, props) {
+  if (isNpc(type)) return npcSpeed(type, scale);
+  if (typeof isChimera === 'function' && isChimera(type)) return chimeraSpeed(props, scale);
+  return mobSpeed(type, scale);
+}
 
 /** Graphics prefs — shadows + art style (persisted) */
 const GFX_KEY = 'shanhai-gfx';
@@ -1052,7 +1362,9 @@ const state = {
   groundPainting: false,
   dragType: null,
   selectedPreset: null,
-  hotbarTab: 'terrain',
+  hotbarTab: 'sculpt',
+  workspace: 'beast',
+  chimeraDraft: null,
   nextId: 1,
   showListPanel: false,
   xformMode: 'translate', // legacy; gizmo shows move+rotate+scale together
@@ -1340,7 +1652,7 @@ function applyXformUndoSnap(snap) {
     entry.mesh.rotation.set(snap.rotation[0], snap.rotation[1], snap.rotation[2]);
     entry.mesh.scale.fromArray(snap.scale);
     syncObjectTransformProps(entry);
-    if (isMob(entry.type)) setMobHome(entry.mesh, entry.mesh.position.x, entry.mesh.position.z);
+    if (usesMobBrain(entry.type)) setMobHome(entry.mesh, entry.mesh.position.x, entry.mesh.position.z);
     if (entry.type === 'water') rebuildCompositeHeightMap();
     if (state.selectedObj === entry.mesh) applyTransformForSelection();
     return;
@@ -1503,7 +1815,7 @@ transform.addEventListener('dragging-changed', (e) => {
     }
     if (obj.userData?.type === 'water') rebuildCompositeHeightMap();
     else if (state.snap) snapObjectToTerrain(obj); // XZ only — Y stays free until 落地
-    if (isMob(obj.userData?.type)) {
+    if (usesMobBrain(obj.userData?.type)) {
       setMobHome(obj, obj.position.x, obj.position.z);
       updateMobRadiusHelper();
     }
@@ -2636,7 +2948,7 @@ function rebuildCompositeHeightMap() {
     const dH = newGround - g.oldGround;
     if (Math.abs(dH) < 1e-4) return;
     o.mesh.position.y = g.oldY + dH;
-    if (isMob(o.type)) {
+    if (usesMobBrain(o.type)) {
       const m = o.mesh.userData.mob;
       if (m) {
         if (m.homeY != null) m.homeY += dH;
@@ -3836,11 +4148,36 @@ const isStructureType = STRUCTURES.isStructureType;
 const ANIMALS = installAnimals(THREE, { mat, cprop, hash2 });
 PRESETS.push(...ANIMALS.PRESETS);
 Object.assign(DEFAULT_PROPS, ANIMALS.DEFAULTS);
-isMob = ANIMALS.isMob;
-isFlyingMob = ANIMALS.isFlyingMob;
-isSwimMob = ANIMALS.isSwimMob;
+isMob = (type) => ANIMALS.isMob(type) || (typeof isChimera === 'function' && isChimera(type));
+isFlyingMob = (type, props) => {
+  if (typeof isChimera === 'function' && isChimera(type)) return chimeraIsFlying(props);
+  return ANIMALS.isFlyingMob(type);
+};
+isSwimMob = (type, props) => {
+  if (typeof isChimera === 'function' && isChimera(type)) return chimeraIsSwim(props);
+  return ANIMALS.isSwimMob(type);
+};
 mobHeadY = ANIMALS.mobHeadY;
 mobSpeed = ANIMALS.mobSpeed;
+
+/** 異獸造物 — modular parts, GLB-swappable later */
+const CHIMERA = installChimera(THREE, { mat, cprop });
+PRESETS.push(...CHIMERA.PRESETS);
+Object.assign(DEFAULT_PROPS, CHIMERA.DEFAULTS);
+const isChimera = CHIMERA.isChimera;
+const chimeraHeadY = CHIMERA.chimeraHeadY;
+const chimeraSpeed = CHIMERA.chimeraSpeed;
+const chimeraIsFlying = CHIMERA.isFlyingChimera;
+const chimeraIsSwim = CHIMERA.isSwimChimera;
+const updateChimeraAnims = CHIMERA.updateChimeraAnims;
+
+/** Mythic characters (NPC + player skins) — separate from animals */
+const CHARACTERS = installCharacters(THREE, { cprop });
+PRESETS.push(...CHARACTERS.PRESETS);
+Object.assign(DEFAULT_PROPS, CHARACTERS.DEFAULTS);
+isNpc = CHARACTERS.isNpc;
+npcHeadY = CHARACTERS.npcHeadY;
+npcSpeed = CHARACTERS.npcSpeed;
 
 /** Muted prehistoric / ink-wash palette helpers */
 const INK = {
@@ -4301,6 +4638,8 @@ const FACTORIES = {
   ...PLANTS.FACTORIES,
   ...STRUCTURES.FACTORIES,
   ...ANIMALS.FACTORIES,
+  ...CHARACTERS.FACTORIES,
+  ...CHIMERA.FACTORIES,
   rock: makeRock,
   shrine: makeShrine,
   totem: makeTotem,
@@ -4317,10 +4656,10 @@ function initMobBrain(mesh, props, home) {
   const hx = home?.x ?? (p.originX != null ? +p.originX : mesh.position.x);
   const hz = home?.z ?? (p.originZ != null ? +p.originZ : mesh.position.z);
   const type = mesh.userData?.type;
-  const aerial = isFlyingMob(type) || isSwimMob(type);
+  const aerial = isFlyingMob(type, p) || isSwimMob(type, p);
   const ground = sampleHeight(hx, hz);
-  const flyH = p.flyHeight ?? (isSwimMob(type) ? 0.4 : 4);
-  const baseY = isSwimMob(type)
+  const flyH = p.flyHeight ?? (isSwimMob(type, p) ? 0.4 : 4);
+  const baseY = isSwimMob(type, p)
     ? Math.max(SEA_LEVEL + 0.15, ground + flyH)
     : (aerial ? ground + flyH : ground);
   const hy = home?.y ?? (p.originY != null ? +p.originY : (aerial ? baseY : ground));
@@ -4347,7 +4686,7 @@ function initMobBrain(mesh, props, home) {
 
 /** Write wander-home into props so encodeMap persists it. */
 function syncMobOriginToProps(entry) {
-  if (!entry?.mesh || !isMob(entry.type)) return;
+  if (!entry?.mesh || !usesMobBrain(entry.type)) return;
   const m = entry.mesh.userData.mob;
   if (!m) return;
   const p = entry.props || (entry.mesh.userData.props = {});
@@ -4363,7 +4702,7 @@ function syncMobOriginToProps(entry) {
 
 /** Re-apply saved origin → brain (play start / after load). */
 function applyMobOriginFromProps(entry) {
-  if (!entry?.mesh || !isMob(entry.type)) return;
+  if (!entry?.mesh || !usesMobBrain(entry.type)) return;
   const p = entry.props || {};
   if (p.originX == null || p.originZ == null) {
     if (!entry.mesh.userData.mob) initMobBrain(entry.mesh, p);
@@ -4435,7 +4774,7 @@ function mobNameTagHeadY(entry) {
   });
   let y;
   if (_nameBox.isEmpty()) {
-    y = mobHeadY(entry.type, scale);
+    y = entityHeadY(entry.type, scale, entry.props);
   } else {
     _nameTop.set(
       (_nameBox.min.x + _nameBox.max.x) * 0.5,
@@ -4457,7 +4796,7 @@ const _mobNameRay = new THREE.Raycaster();
 
 /** Floating name plate above mob head when props.showName */
 function syncMobNameTag(entry) {
-  if (!entry?.mesh || !isMob(entry.type)) return;
+  if (!entry?.mesh || !usesMobBrain(entry.type)) return;
   const mesh = entry.mesh;
   const p = entry.props || {};
   if (!p.showName) {
@@ -4536,10 +4875,10 @@ function setMobHome(mesh, x, z) {
   const p = mesh.userData.props || {};
   const type = mesh.userData?.type;
   m.homeX = x; m.homeZ = z; m.tx = x; m.tz = z; m.wait = 0.3;
-  if (isFlyingMob(type) || isSwimMob(type)) {
+  if (isFlyingMob(type, p) || isSwimMob(type, p)) {
     const ground = sampleHeight(x, z);
-    const flyH = p.flyHeight ?? (isSwimMob(type) ? 0.4 : 3);
-    const y = isSwimMob(type)
+    const flyH = p.flyHeight ?? (isSwimMob(type, p) ? 0.4 : 3);
+    const y = isSwimMob(type, p)
       ? Math.max(mesh.position.y, Math.max(SEA_LEVEL + 0.15, ground + flyH))
       : Math.max(mesh.position.y, ground + flyH * 0.5);
     m.homeY = y; m.ty = y;
@@ -4557,12 +4896,12 @@ function setMobHome(mesh, x, z) {
 
 /** Snap live pose back to placement home so gizmo / AABB / 遊走半徑 ignore AI offsets. */
 function snapMobToPlacement(mesh) {
-  if (!mesh || !isMob(mesh.userData?.type)) return;
+  if (!mesh || !usesMobBrain(mesh.userData?.type)) return;
   const p = mesh.userData.props || {};
   if (!mesh.userData.mob) initMobBrain(mesh, p);
   const m = mesh.userData.mob;
   const type = mesh.userData.type;
-  const aerial = isFlyingMob(type) || isSwimMob(type);
+  const aerial = isFlyingMob(type, p) || isSwimMob(type, p);
   const hx = p.originX != null ? +p.originX : m.homeX;
   const hz = p.originZ != null ? +p.originZ : m.homeZ;
   m.homeX = hx;
@@ -4610,17 +4949,21 @@ function ensureMobParts(mesh) {
 }
 
 function updateMobs(dt) {
+  const chimeraT = performance.now() / 1000;
   for (const o of state.objects) {
-    if (!isMob(o.type)) continue;
+    if (!usesMobBrain(o.type)) continue;
     const mesh = o.mesh;
     const p = o.props;
+    if (mesh.userData.chimera && typeof updateChimeraAnims === 'function') {
+      updateChimeraAnims(mesh, chimeraT);
+    }
     if (p.showName == null) p.showName = false;
     if (p.stationary == null) p.stationary = false;
     if (!mesh.userData.mob) initMobBrain(mesh, p);
     const m = mesh.userData.mob;
     const parts = ensureMobParts(mesh);
-    const flying = isFlyingMob(o.type);
-    const swimming = isSwimMob(o.type);
+    const flying = isFlyingMob(o.type, p);
+    const swimming = isSwimMob(o.type, p);
     const aerial = flying || swimming;
     // Keep nametag in sync (cheap if already correct)
     if (p.showName) syncMobNameTag(o);
@@ -4650,13 +4993,15 @@ function updateMobs(dt) {
         const tail = parts.tail;
         if (tail && swimming) tail.rotation.y = Math.sin(m.phase) * 0.2;
         mesh.position.y = (m.homeY ?? mesh.position.y) + Math.sin(m.phase * 0.5) * 0.06;
+      } else if (isNpc(o.type)) {
+        CHARACTERS.animateNpcWander(mesh, m.phase, false);
       }
       continue;
     }
 
     const radius = Math.max(0.5, p.wanderRadius ?? 6);
     const flyH = p.flyHeight ?? (swimming ? 0.4 : 4);
-    const speed = mobSpeed(o.type, p.scale ?? 1);
+    const speed = entitySpeed(o.type, p.scale ?? 1, p);
 
     if (m.wait > 0) {
       m.wait -= dt;
@@ -4679,6 +5024,7 @@ function updateMobs(dt) {
         if (armR) armR.rotation.x = Math.sin(m.phase + 1) * 0.08;
         const tail = parts.tail;
         if (tail) tail.rotation.y = Math.sin(m.phase * 0.8) * 0.15;
+        if (isNpc(o.type)) CHARACTERS.animateNpcWander(mesh, m.phase, false);
       }
       continue;
     }
@@ -4755,6 +5101,7 @@ function updateMobs(dt) {
       if (legRF) legRF.rotation.x = -swing * 0.5;
       const tail = parts.tail;
       if (tail) tail.rotation.y = Math.sin(m.phase * 0.7) * 0.25;
+      if (isNpc(o.type)) CHARACTERS.animateNpcWander(mesh, m.phase, true);
     }
   }
 }
@@ -4770,25 +5117,37 @@ function clearMobRadiusHelper() {
 function updateMobRadiusHelper() {
   clearMobRadiusHelper();
   const mesh = state.selectedObj;
-  if (!mesh || !isMob(mesh.userData?.type) || play.active) return;
-  const p = mesh.userData.props || {};
+  if (!mesh || play.active) return;
+  const type = mesh.userData?.type;
+  if (!usesMobBrain(type)) return;
+  const entry = state.objects.find((o) => o.mesh === mesh);
+  const p = entry?.props || mesh.userData.props || {};
+  // Keep props bag shared so slider / checkbox edits stay in sync
+  if (entry) mesh.userData.props = entry.props;
   if (p.stationary) return; // 不移動 — no wander ring
-  const r = Math.max(0.5, p.wanderRadius ?? 6);
+  const r = Math.max(0.5, +(p.wanderRadius ?? 6));
   const brain = mesh.userData.mob;
-  // Always center on placement origin — never the live wander pose
+  // Placement origin only — never the live wander pose
   const cx = p.originX != null ? +p.originX : (brain?.homeX ?? mesh.position.x);
   const cz = p.originZ != null ? +p.originZ : (brain?.homeZ ?? mesh.position.z);
-  const y = sampleHeight(cx, cz) + 0.04;
+  const y = sampleHeight(cx, cz) + 0.06;
+  const inner = Math.max(0.12, r - 0.28);
   mobRadiusHelper = new THREE.Mesh(
-    new THREE.RingGeometry(Math.max(0.2, r - 0.06), r, 64),
+    new THREE.RingGeometry(inner, r, 72),
     new THREE.MeshBasicMaterial({
-      color: 0xc9a84c, transparent: true, opacity: 0.35,
-      side: THREE.DoubleSide, depthWrite: false,
+      color: 0xc9a84c,
+      transparent: true,
+      opacity: 0.55,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+      depthTest: false,
     })
   );
   mobRadiusHelper.rotation.x = -Math.PI / 2;
   mobRadiusHelper.position.set(cx, y, cz);
   mobRadiusHelper.name = 'mobRadiusHelper';
+  mobRadiusHelper.renderOrder = 10;
+  mobRadiusHelper.raycast = () => {};
   scene.add(mobRadiusHelper);
 }
 
@@ -4823,7 +5182,7 @@ function snapObjectToTerrain(obj, opts = {}) {
   // Y only when explicitly landing (落地) — never auto-glue to the floor
   if (opts.forceGround) {
     const ground = sampleHeight(obj.position.x, obj.position.z);
-    if (isFlyingMob(obj.userData?.type)) {
+    if (isFlyingMob(obj.userData?.type, obj.userData?.props)) {
       const fh = obj.userData.props?.flyHeight ?? 4;
       obj.position.y = ground + fh;
     } else {
@@ -4874,10 +5233,13 @@ function createObject(type, props, position, opts = {}) {
   applyMeshShadows(mesh, gfxShadowsOn());
   const entry = {
     id: mesh.userData.id, type, mesh, props: p,
-    name: allocName(defaultNameFor('object', type), collectTakenNames()),
+    name: allocName(
+      (isChimera(type) && p.beastName) ? p.beastName : defaultNameFor('object', type),
+      collectTakenNames(),
+    ),
   };
   state.objects.push(entry);
-  if (isMob(type)) {
+  if (usesMobBrain(type)) {
     const home = opts.mobHome || {
       x: p.originX != null ? +p.originX : mesh.position.x,
       z: p.originZ != null ? +p.originZ : mesh.position.z,
@@ -4896,7 +5258,7 @@ function createObject(type, props, position, opts = {}) {
   }
   if (type === 'water') rebuildCompositeHeightMap();
   refreshOutliner();
-  if (isMob(type)) syncMobNameTag(entry);
+  if (usesMobBrain(type)) syncMobNameTag(entry);
   if (type === 'water') fixWaterBankScale(mesh);
   return entry;
 }
@@ -4946,13 +5308,13 @@ function rebuildObjectMesh(entry) {
   scene.add(mesh);
   applyMeshShadows(mesh, gfxShadowsOn());
   entry.mesh = mesh;
-  if (isMob(entry.type)) {
+  if (usesMobBrain(entry.type)) {
     initMobBrain(mesh, entry.props, mobHome || { x: pos.x, z: pos.z, y: pos.y });
   }
   if (entry.type === 'water') rebuildCompositeHeightMap();
   else snapObjectToTerrain(mesh); // XZ grid only — preserve free Y
   if (was) selectObject(mesh);
-  if (isMob(entry.type)) syncMobNameTag(entry);
+  if (usesMobBrain(entry.type)) syncMobNameTag(entry);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -5219,7 +5581,7 @@ function selectObject(mesh, { additive = false } = {}) {
   state.selectedObj = mesh;
   mesh.userData.freezeAnim = true;
   resetPlantPose(mesh);
-  if (isMob(mesh.userData?.type)) snapMobToPlacement(mesh);
+  if (usesMobBrain(mesh.userData?.type)) snapMobToPlacement(mesh);
   state.multi = [{ kind: 'object', id: entry.id }];
   applyTransformForSelection();
   showXformBar();
@@ -5228,7 +5590,7 @@ function selectObject(mesh, { additive = false } = {}) {
   updateGroupButtonUI();
   refreshOutliner();
   updateMobRadiusHelper();
-  if (entry && isMob(entry.type)) syncMobNameTag(entry);
+  if (entry && usesMobBrain(entry.type)) syncMobNameTag(entry);
 }
 
 function selectFeature(f, { additive = false } = {}) {
@@ -5412,7 +5774,7 @@ function syncGroupFromProxy(final) {
         o.mesh.position.y = s.y + dy;
       }
       if (state.snap) snapObjectToTerrain(o.mesh);
-      if (isMob(o.type)) setMobHome(o.mesh, nx, nz);
+      if (usesMobBrain(o.type)) setMobHome(o.mesh, nx, nz);
       if (o.type === 'water') needsTerrain = true;
     } else if (s.kind === 'feature') {
       const f = state.features.find((x) => x.id === s.id);
@@ -5680,7 +6042,563 @@ function refreshOutliner() {
   });
 }
 
+function getChimeraDraft() {
+  if (!state.chimeraDraft) state.chimeraDraft = CHIMERA.normalizeRecipe({});
+  return state.chimeraDraft;
+}
+
+function syncChimeraRecipe(target, patch) {
+  const next = CHIMERA.normalizeRecipe({ ...target, ...patch });
+  Object.keys(target).forEach((k) => { delete target[k]; });
+  Object.assign(target, next);
+  return target;
+}
+
+let beastPreview = null;
+let beastTab = 'body';
+let beastTweakWired = false;
+
+function snapshotBeastTweak(t) {
+  return t && typeof t === 'object' ? { ...t } : null;
+}
+
+function beastTweaksEqual(a, b) {
+  return JSON.stringify(a || null) === JSON.stringify(b || null);
+}
+
+function restoreBeastPartTweak(partKey, tweakOrNull) {
+  const recipe = getChimeraDraft();
+  if (!recipe.partTweaks) recipe.partTweaks = {};
+  if (tweakOrNull == null) delete recipe.partTweaks[partKey];
+  else recipe.partTweaks[partKey] = { ...tweakOrNull };
+  syncChimeraRecipe(recipe, recipe);
+  refreshBeastDesc(recipe);
+  const wasUnlocked = !!beastPreview?.isUnlocked?.();
+  updateBeastPreview(recipe);
+  if (wasUnlocked) {
+    beastPreview?.setUnlockMode?.(true, { onTweakChange: applyBeastPartTweak });
+  }
+}
+
+function applyBeastPartTweak(partKey, tweak) {
+  if (!partKey || !tweak) return;
+  const recipe = getChimeraDraft();
+  if (!recipe.partTweaks) recipe.partTweaks = {};
+  const before = snapshotBeastTweak(recipe.partTweaks[partKey]);
+  const after = snapshotBeastTweak(tweak);
+  if (beastTweaksEqual(before, after)) return;
+  recipe.partTweaks[partKey] = after;
+  syncChimeraRecipe(recipe, recipe);
+  pushCmd({
+    undo: () => restoreBeastPartTweak(partKey, before),
+    redo: () => restoreBeastPartTweak(partKey, after),
+  });
+}
+
+function ensureBeastPreview() {
+  const canvas = document.getElementById('beast-preview-canvas');
+  if (!canvas) return null;
+  if (!beastPreview) beastPreview = CHIMERA.createPreview(canvas);
+  if (!beastPreview?.setUnlockMode) {
+    try { beastPreview.dispose?.(); } catch (_) { /* */ }
+    beastPreview = CHIMERA.createPreview(canvas);
+  }
+  return beastPreview;
+}
+
+function setBeastUnlockUI(unlocked) {
+  const bar = document.getElementById('beast-tweak-bar');
+  const btn = document.getElementById('beast-btn-lock');
+  const hint = document.getElementById('beast-stage-hint');
+  const locked = !unlocked;
+  bar?.classList.toggle('unlocked', !!unlocked);
+  if (btn) {
+    btn.classList.toggle('lock-on', locked);
+    btn.title = locked ? '解鎖' : '鎖定';
+    btn.textContent = locked ? '🔓 解鎖' : '🔒 鎖';
+  }
+  if (hint) {
+    hint.textContent = unlocked
+      ? '點選部位 · 拖箭頭／弧／塊調整 · Ctrl+Z 撤銷 · 左鍵旋轉視角'
+      : '左鍵旋轉 · 右鍵平移 · 滾輪縮放';
+  }
+}
+
+function enterBeastUnlockMode() {
+  const preview = ensureBeastPreview();
+  if (!preview?.setUnlockMode) {
+    toast('無法解鎖：預覽未就緒');
+    return false;
+  }
+  preview.setUnlockMode(true, { onTweakChange: applyBeastPartTweak });
+  setBeastUnlockUI(true);
+  toast('已解鎖 · 點選部位微調');
+  return true;
+}
+
+function exitBeastUnlockMode() {
+  const preview = ensureBeastPreview();
+  preview?.setUnlockMode?.(false);
+  setBeastUnlockUI(false);
+  commitBeastRecipe(false);
+  toast('已鎖定 · 無法移動');
+}
+
+function wireBeastTweakBar() {
+  if (beastTweakWired) return;
+  const bar = document.getElementById('beast-tweak-bar');
+  if (!bar) return;
+  beastTweakWired = true;
+
+  bar.addEventListener('click', (e) => {
+    const btn = e.target.closest?.('#beast-btn-lock, [data-beast-lock]');
+    if (!btn) return;
+    e.preventDefault();
+    e.stopPropagation();
+    const unlocked = !!beastPreview?.isUnlocked?.();
+    if (unlocked) exitBeastUnlockMode();
+    else enterBeastUnlockMode();
+  });
+}
+
+function setWorkspace(ws) {
+  if (ws !== 'island' && ws !== 'beast') return;
+  const same = state.workspace === ws;
+  state.workspace = ws;
+  document.body.dataset.workspace = ws;
+  document.querySelectorAll('.workspace-switch .ws-btn').forEach((b) => {
+    b.classList.toggle('on', b.dataset.workspace === ws);
+  });
+  const studio = document.getElementById('beast-studio');
+  if (ws === 'beast') {
+    if (!same && state.mode === 'play') exitPlay();
+    if (!same) {
+      // leave island selection UI, but don't recurse into beast close
+      if (state.selectedObj) state.selectedObj.userData.freezeAnim = false;
+      if (transform.object) transform.detach();
+      transform.getHelper().visible = false;
+      state.selectedObj = null;
+      state.selectedFeature = null;
+      state.multi = [];
+      document.getElementById('panel-right')?.classList.add('hidden');
+    }
+    studio?.setAttribute('aria-hidden', 'false');
+    openBeastStudio();
+  } else {
+    studio?.setAttribute('aria-hidden', 'true');
+    if (!same) closeBeastStudio();
+  }
+}
+
+function openBeastStudio() {
+  const canvas = document.getElementById('beast-preview-canvas');
+  if (!canvas) return;
+  ensureBeastPreview();
+  wireBeastTweakBar();
+  setBeastUnlockUI(!!beastPreview?.isUnlocked?.());
+  renderBeastStudio();
+  requestAnimationFrame(() => beastPreview?.resize?.());
+}
+
+function closeBeastStudio() {
+  if (beastPreview) {
+    beastPreview.setUnlockMode?.(false);
+    beastPreview.dispose();
+    beastPreview = null;
+  }
+  setBeastUnlockUI(false);
+}
+
+function updateBeastPreview(recipe) {
+  const preview = ensureBeastPreview();
+  preview?.update(recipe);
+}
+
+function refreshBeastDesc(recipe) {
+  const d = document.getElementById('beast-desc');
+  if (d) d.textContent = CHIMERA.describeRecipe(recipe);
+  const name = document.getElementById('beast-name');
+  if (name && document.activeElement !== name) name.value = recipe.beastName || '';
+}
+
+function chimeraPartPickerHtml(slot, selectedId, idx) {
+  const parts = CHIMERA.partsForSlot(slot);
+  return `<div class="chimera-parts" data-slot="${slot}" data-idx="${idx}">${
+    parts.map((p) => `<button type="button" data-part="${p.id}" class="${p.id === selectedId ? 'on' : ''}">${p.label}</button>`).join('')
+  }</div>`;
+}
+
+function beastStepper(key, label, max, value) {
+  return `<div class="chimera-row"><span>${label}</span>
+    <div class="stepper">
+      <button type="button" data-step="${key}" data-dir="-1" aria-label="減少">−</button>
+      <span data-count="${key}" style="min-width:1.4em;text-align:center;color:var(--bone);font-size:0.95rem">${value}</span>
+      <button type="button" data-step="${key}" data-dir="1" aria-label="增加">+</button>
+      <span style="font-size:0.7rem;color:#6a6050">/ ${max}</span>
+    </div>
+  </div>`;
+}
+
+function beastFeetCountHtml(value) {
+  const opts = CHIMERA.FEET_COUNTS || [2, 4, 6];
+  return `<div class="chimera-row"><span>足數</span>
+    <div class="chimera-parts" data-feet-count="1">${
+      opts.map((n) => {
+        const pairs = n / 2;
+        return `<button type="button" data-feet="${n}" class="${n === value ? 'on' : ''}">${n}<span style="opacity:.65;font-size:0.72em"> · ${pairs}對</span></button>`;
+      }).join('')
+    }</div>
+  </div>`;
+}
+
+function beastStyleBlockHtml(styleKey, idx, style, { face = false } = {}) {
+  const s = style || {};
+  const prefix = `data-style="${styleKey}" data-sidx="${idx}"`;
+  let html = `
+    <div class="group-label">主色</div>
+    <input type="color" ${prefix} data-field="color" value="${s.color || '#c4783a'}" style="width:100%;height:36px;border:none;border-radius:6px;background:transparent;cursor:pointer"/>
+    <div class="group-label">輔色</div>
+    <input type="color" ${prefix} data-field="color2" value="${s.color2 || '#e8d8b8'}" style="width:100%;height:36px;border:none;border-radius:6px;background:transparent;cursor:pointer"/>
+  `;
+  if (face) {
+    html += `
+      <div class="group-label">面紋（繪於首）</div>
+      <div class="face-draw-wrap">
+        <canvas class="face-canvas" width="180" height="180" ${prefix} data-field="faceMap"></canvas>
+        <div class="face-draw-tools">
+          <input type="color" class="face-brush-color" value="#2a1810" title="筆色"/>
+          <button type="button" class="hud-btn face-clear" style="font-size:0.75rem;padding:4px 10px">清除</button>
+        </div>
+      </div>
+      <p style="font-size:0.72rem;color:#8a8070;line-height:1.4">在橢圓範圍內描繪五官或斑紋。</p>
+    `;
+  }
+  return html;
+}
+
+function beastPanelsHtml(recipe) {
+  const r = CHIMERA.normalizeRecipe(recipe);
+  const lim = CHIMERA.LIMITS;
+  const traits = CHIMERA.TRAIT_PRESETS.map((t) => `
+    <label><input type="checkbox" data-trait="${t.id}" ${r.traits.includes(t.id) ? 'checked' : ''}/> ${t.label}</label>
+  `).join('');
+  const soundOpts = CHIMERA.SOUND_PRESETS.map((s) =>
+    `<option value="${s.id}" ${r.sound === s.id ? 'selected' : ''}>${s.label}</option>`).join('');
+
+  const bodyPanel = `
+    <div class="btab-panel ${beastTab === 'body' ? 'on' : ''}" data-panel="body">
+      <div class="group-label">體型 <span class="val" id="beast-scale-val">${(+r.scale).toFixed(2)}</span></div>
+      <input type="range" id="beast-scale" min="0.4" max="2.4" step="0.05" value="${r.scale}" style="width:100%"/>
+      <div class="group-label">身形</div>
+      ${chimeraPartPickerHtml('body', r.body, 0)}
+      ${beastStyleBlockHtml('bodyStyle', 0, r.bodyStyle)}
+    </div>`;
+
+  const featurePanel = (tab, countKey, noun, slot, partsKey, stylesKey, max, withFace, { sharedDesign = false, feetCounts = false } = {}) => {
+    const count = r[countKey];
+    const parts = r[partsKey] || [];
+    const styles = r[stylesKey] || [];
+    let inner = feetCounts
+      ? beastFeetCountHtml(count)
+      : beastStepper(countKey, `${noun}數`, max, count);
+    if (count <= 0) {
+      inner += `<p style="font-size:0.78rem;color:#6a6050;margin-top:12px">無${noun} · 可點上方增加</p>`;
+    } else if (sharedDesign) {
+      inner += `<div class="group-label">${noun}形</div>`;
+      inner += chimeraPartPickerHtml(slot, parts[0], 0);
+      inner += beastStyleBlockHtml(stylesKey, 0, styles[0], { face: withFace });
+    } else {
+      for (let i = 0; i < count; i++) {
+        inner += `<div class="group-label">${noun}${count > 1 ? ` ${i + 1}` : ''}</div>`;
+        inner += chimeraPartPickerHtml(slot, parts[i], i);
+        inner += beastStyleBlockHtml(stylesKey, i, styles[i], { face: withFace });
+      }
+    }
+    return `<div class="btab-panel ${beastTab === tab ? 'on' : ''}" data-panel="${tab}">${inner}</div>`;
+  };
+
+  return bodyPanel
+    + featurePanel('head', 'heads', '首', 'head', 'headParts', 'headStyles', lim.heads, true)
+    + featurePanel('foot', 'feet', '足', 'foot', 'footParts', 'footStyles', lim.feet, false, { sharedDesign: true, feetCounts: true })
+    + featurePanel('tail', 'tails', '尾', 'tail', 'tailParts', 'tailStyles', lim.tails, false)
+    + `
+    <div class="btab-panel ${beastTab === 'nature' ? 'on' : ''}" data-panel="nature">
+      <div class="group-label">特性</div>
+      <div class="chimera-traits">${traits}</div>
+      <div class="group-label">其音如</div>
+      <select id="beast-sound" style="width:100%;padding:8px;border-radius:6px;border:1px solid #3a3830;background:#1a1916;color:var(--bone);margin-bottom:8px">${soundOpts}</select>
+      <div id="beast-sound-custom-wrap" style="display:${r.sound === 'custom' ? '' : 'none'}">
+        <input type="text" id="beast-sound-custom" maxlength="16" value="${String(r.soundCustom || '').replace(/"/g, '&quot;')}"
+          placeholder="如：嬰兒" style="width:100%;box-sizing:border-box;padding:6px 10px;border-radius:6px;border:1px solid #3a3830;background:#1a1916;color:var(--bone)"/>
+      </div>
+    </div>`;
+}
+
+function paintFaceCanvas(canvas, faceMap) {
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#e8dcc8';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.strokeStyle = 'rgba(80,60,40,0.25)';
+  ctx.beginPath();
+  ctx.ellipse(canvas.width * 0.5, canvas.height * 0.5, canvas.width * 0.38, canvas.height * 0.42, 0, 0, Math.PI * 2);
+  ctx.stroke();
+  if (!faceMap) return;
+  const img = new Image();
+  img.onload = () => { ctx.drawImage(img, 0, 0, canvas.width, canvas.height); };
+  img.src = faceMap;
+}
+
+function getStyleTarget(recipe, styleKey, idx) {
+  if (styleKey === 'bodyStyle') {
+    if (!recipe.bodyStyle) recipe.bodyStyle = {};
+    return recipe.bodyStyle;
+  }
+  if (!Array.isArray(recipe[styleKey])) recipe[styleKey] = [];
+  if (!recipe[styleKey][idx]) recipe[styleKey][idx] = {};
+  return recipe[styleKey][idx];
+}
+
+function commitBeastRecipe(rebuildPanels = false) {
+  const recipe = getChimeraDraft();
+  syncChimeraRecipe(recipe, recipe);
+  refreshBeastDesc(recipe);
+  updateBeastPreview(recipe);
+  if (rebuildPanels) renderBeastPanelsOnly();
+}
+
+function renderBeastPanelsOnly() {
+  if (beastTab === 'hand') beastTab = 'foot';
+  const recipe = getChimeraDraft();
+  const panels = document.getElementById('beast-panels');
+  if (!panels) return;
+  panels.innerHTML = beastPanelsHtml(recipe);
+  wireBeastPanelControls(panels, recipe);
+}
+
+function wireBeastPanelControls(root, recipe) {
+  root.querySelectorAll('[data-step]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const key = btn.dataset.step;
+      const dir = +btn.dataset.dir;
+      recipe[key] = Math.max(0, Math.min(CHIMERA.LIMITS[key], (recipe[key] ?? 0) + dir));
+      syncChimeraRecipe(recipe, recipe);
+      commitBeastRecipe(true);
+    });
+  });
+  root.querySelectorAll('[data-feet]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      recipe.feet = +btn.dataset.feet;
+      syncChimeraRecipe(recipe, recipe);
+      commitBeastRecipe(true);
+    });
+  });
+  root.querySelectorAll('.chimera-parts').forEach((row) => {
+    const slot = row.dataset.slot;
+    const idx = +row.dataset.idx;
+    row.querySelectorAll('[data-part]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        if (slot === 'body') recipe.body = btn.dataset.part;
+        else {
+          const key = `${slot}Parts`;
+          const id = btn.dataset.part;
+          const countKey = slot === 'hand' ? 'hands' : slot === 'foot' ? 'feet'
+            : slot === 'head' ? 'heads' : slot === 'tail' ? 'tails' : null;
+          if (!Array.isArray(recipe[key])) recipe[key] = [];
+          if ((slot === 'hand' || slot === 'foot') && countKey) {
+            const n = Math.max(1, recipe[countKey] || 1);
+            recipe[key] = Array.from({ length: n }, () => id);
+          } else {
+            recipe[key][idx] = id;
+          }
+        }
+        syncChimeraRecipe(recipe, recipe);
+        commitBeastRecipe(true);
+      });
+    });
+  });
+  root.querySelector('#beast-scale')?.addEventListener('input', (e) => {
+    recipe.scale = +e.target.value;
+    const span = root.querySelector('#beast-scale-val');
+    if (span) span.textContent = (+recipe.scale).toFixed(2);
+    commitBeastRecipe(false);
+  });
+
+  root.querySelectorAll('[data-style][data-field]').forEach((el) => {
+    const styleKey = el.dataset.style;
+    const idx = +el.dataset.sidx;
+    const field = el.dataset.field;
+    if (field === 'patternImage') {
+      el.addEventListener('change', () => {
+        const file = el.files?.[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = () => {
+          const target = getStyleTarget(recipe, styleKey, idx);
+          target.patternImage = reader.result;
+          if (styleKey === 'handStyles' || styleKey === 'footStyles') {
+            const shared = { ...target, patternImage: reader.result };
+            const fn = Math.max(0, recipe.feet || 0);
+            recipe.footStyles = Array.from({ length: fn }, () => ({ ...shared }));
+            recipe.handStyles = [];
+            recipe.handParts = [];
+            recipe.hands = 0;
+          }
+          syncChimeraRecipe(recipe, recipe);
+          commitBeastRecipe(true);
+        };
+        reader.readAsDataURL(file);
+      });
+      return;
+    }
+    if (field === 'faceMap') return; // wired below
+    const evt = el.tagName === 'SELECT' || el.type === 'color' ? (el.type === 'color' ? 'input' : 'change') : 'change';
+    el.addEventListener(evt, () => {
+      const target = getStyleTarget(recipe, styleKey, idx);
+      target[field] = el.value;
+      if (styleKey === 'bodyStyle') {
+        if (field === 'color') recipe.color = el.value;
+        if (field === 'color2') recipe.color2 = el.value;
+        if (field === 'pattern') recipe.pattern = el.value;
+      }
+      // Shared limb style: keep arm & leg colors in sync
+      if (styleKey === 'handStyles' || styleKey === 'footStyles') {
+        const shared = { ...(styleKey === 'footStyles' ? (recipe.footStyles?.[0] || {}) : {}) };
+        shared[field] = el.value;
+        const fn = Math.max(0, recipe.feet || 0);
+        recipe.footStyles = Array.from({ length: fn }, () => ({ ...shared }));
+        recipe.handStyles = [];
+        recipe.handParts = [];
+        recipe.hands = 0;
+      }
+      syncChimeraRecipe(recipe, recipe);
+      commitBeastRecipe(false);
+    });
+  });
+
+  root.querySelectorAll('[data-clear-img]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const target = getStyleTarget(recipe, btn.dataset.style, +btn.dataset.sidx);
+      target.patternImage = '';
+      syncChimeraRecipe(recipe, recipe);
+      commitBeastRecipe(true);
+    });
+  });
+
+  root.querySelectorAll('[data-trait]').forEach((cb) => {
+    cb.addEventListener('change', () => {
+      const set = new Set(recipe.traits || []);
+      if (cb.checked) set.add(cb.dataset.trait); else set.delete(cb.dataset.trait);
+      recipe.traits = [...set];
+      commitBeastRecipe(false);
+    });
+  });
+  const soundSel = root.querySelector('#beast-sound');
+  const soundWrap = root.querySelector('#beast-sound-custom-wrap');
+  soundSel?.addEventListener('change', () => {
+    recipe.sound = soundSel.value;
+    if (soundWrap) soundWrap.style.display = recipe.sound === 'custom' ? '' : 'none';
+    commitBeastRecipe(false);
+  });
+  root.querySelector('#beast-sound-custom')?.addEventListener('change', (e) => {
+    recipe.soundCustom = e.target.value.trim();
+    commitBeastRecipe(false);
+  });
+
+  root.querySelectorAll('canvas.face-canvas').forEach((canvas) => {
+    const styleKey = canvas.dataset.style;
+    const idx = +canvas.dataset.sidx;
+    const target = getStyleTarget(recipe, styleKey, idx);
+    paintFaceCanvas(canvas, target.faceMap || '');
+    const wrap = canvas.closest('.face-draw-wrap');
+    const ctx = canvas.getContext('2d');
+    let drawing = false;
+    const brush = wrap?.querySelector('.face-brush-color');
+    const pos = (ev) => {
+      const rect = canvas.getBoundingClientRect();
+      return {
+        x: (ev.clientX - rect.left) * (canvas.width / rect.width),
+        y: (ev.clientY - rect.top) * (canvas.height / rect.height),
+      };
+    };
+    const stroke = (ev) => {
+      const p = pos(ev);
+      ctx.fillStyle = brush?.value || '#2a1810';
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 4.5, 0, Math.PI * 2);
+      ctx.fill();
+    };
+    const endStroke = () => {
+      if (!drawing) return;
+      drawing = false;
+      target.faceMap = canvas.toDataURL('image/png');
+      if (idx === 0) recipe.faceMap = target.faceMap;
+      syncChimeraRecipe(recipe, recipe);
+      commitBeastRecipe(false);
+    };
+    canvas.addEventListener('pointerdown', (ev) => {
+      drawing = true;
+      canvas.setPointerCapture(ev.pointerId);
+      stroke(ev);
+    });
+    canvas.addEventListener('pointermove', (ev) => { if (drawing) stroke(ev); });
+    canvas.addEventListener('pointerup', endStroke);
+    canvas.addEventListener('pointercancel', endStroke);
+    wrap?.querySelector('.face-clear')?.addEventListener('click', () => {
+      paintFaceCanvas(canvas, '');
+      target.faceMap = '';
+      if (idx === 0) recipe.faceMap = '';
+      syncChimeraRecipe(recipe, recipe);
+      commitBeastRecipe(false);
+    });
+  });
+}
+
+function renderBeastStudio() {
+  const recipe = getChimeraDraft();
+  syncChimeraRecipe(recipe, recipe);
+  refreshBeastDesc(recipe);
+  updateBeastPreview(recipe);
+  renderBeastPanelsOnly();
+
+  document.querySelectorAll('#beast-tabs .btab').forEach((btn) => {
+    btn.classList.toggle('on', btn.dataset.btab === beastTab);
+    btn.onclick = () => {
+      beastTab = btn.dataset.btab;
+      document.querySelectorAll('#beast-tabs .btab').forEach((b) => b.classList.toggle('on', b.dataset.btab === beastTab));
+      document.querySelectorAll('#beast-panels .btab-panel').forEach((p) => {
+        p.classList.toggle('on', p.dataset.panel === beastTab);
+      });
+    };
+  });
+
+  const nameInput = document.getElementById('beast-name');
+  if (nameInput && !nameInput.dataset.bound) {
+    nameInput.dataset.bound = '1';
+    const apply = () => {
+      const recipe2 = getChimeraDraft();
+      recipe2.beastName = nameInput.value.trim() || '未名異獸';
+      commitBeastRecipe(false);
+    };
+    nameInput.addEventListener('change', apply);
+    nameInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') { e.preventDefault(); nameInput.blur(); }
+    });
+  }
+}
+
+/** @deprecated island panel path — beast is a standalone workspace now */
+function hideChimeraStage() { closeBeastStudio(); }
+function showChimeraStage() { /* no-op */ }
+function renderChimeraComposer() {
+  setWorkspace('beast');
+}
+
 function renderPlaceToolProps(type) {
+  if (isChimera(type)) {
+    Object.assign(getChimeraDraft(), CHIMERA.normalizeRecipe(p));
+    setWorkspace('beast');
+    return;
+  }
   const el = document.getElementById('props-content');
   const label = PRESETS.find((p) => p.type === type)?.label || type;
   const plant = isTreeType(type) || isFlowerType(type);
@@ -5724,6 +6642,11 @@ function renderPropsObject(mesh) {
   const p = mesh.userData.props;
   const entry = state.objects.find((o) => o.mesh === mesh);
   if (entry && !entry.name) entry.name = defaultNameFor('object', type);
+  if (isChimera(type)) {
+    Object.assign(getChimeraDraft(), CHIMERA.normalizeRecipe(p));
+    setWorkspace('beast');
+    return;
+  }
   // Slider is yaw (Y) only — sync display from live mesh (gizmo may have tilted X/Z).
   // Normalize into [0, 2π) so the range input stays valid after free rotate.
   {
@@ -5829,6 +6752,13 @@ function renderPropsObject(mesh) {
   } else if (type === 'nest') {
     addC('color', '巢色', '#6a5038');
     addC('color2', '卵色', '#d8c8a0');
+  } else if (isNpc(type)) {
+    if (p.showName == null) p.showName = true;
+    if (p.stationary == null) p.stationary = false;
+    addCheck('showName', '顯示名稱（頭上）');
+    addCheck('stationary', '不移動');
+    addR('wanderRadius', '遊走半徑', 1, 24, 0.5);
+    addNote('人物會在黃圈半徑內閒逛（邏輯與獸類相同，之後可加對話／互動）· 選取時暫停');
   } else if (isMob(type)) {
     if (p.showName == null) p.showName = false;
     if (p.stationary == null) p.stationary = false;
@@ -5865,7 +6795,7 @@ function renderPropsObject(mesh) {
       el.querySelector('h3').textContent = entry.name;
       el.querySelector('#item-name').value = entry.name;
       refreshOutliner();
-      if (isMob(entry.type)) syncMobNameTag(entry);
+      if (usesMobBrain(entry.type)) syncMobNameTag(entry);
     });
   }
   wirePropInputs(el, (key) => {
@@ -5879,13 +6809,13 @@ function renderPropsObject(mesh) {
       e2._localHitbox = null;
       return;
     }
-    if (isMob(e2.type) && (key === 'showName' || key === 'stationary')) {
+    if (usesMobBrain(e2.type) && (key === 'showName' || key === 'stationary')) {
       syncMobNameTag(e2);
       updateMobRadiusHelper();
       return;
     }
     rebuildObjectMesh(e2);
-    if (isMob(e2.type)) {
+    if (usesMobBrain(e2.type)) {
       updateMobRadiusHelper();
       syncMobNameTag(e2);
     }
@@ -6326,7 +7256,10 @@ function renderThumb(type) {
     || type === 'path') {
     mesh = makeTerrainThumbMesh(type);
   } else if (FACTORIES[type]) {
-    mesh = FACTORIES[type]({ ...DEFAULT_PROPS[type] });
+    const props = isChimera(type)
+      ? { ...getChimeraDraft() }
+      : { ...DEFAULT_PROPS[type] };
+    mesh = FACTORIES[type](props);
     mesh.traverse((o) => {
       if (!o.isMesh) return;
       const col = o.material?.color ? o.material.color.getHex() : 0x888888;
@@ -6385,6 +7318,7 @@ function ensureThumb(type) {
 
 const hotbarTabsEl = document.getElementById('hotbar-tabs');
 HOTBAR_TABS.forEach((t) => {
+  if (t.hidden) return;
   const btn = document.createElement('button');
   btn.type = 'button';
   btn.className = 'tab' + (t.id === state.hotbarTab ? ' active' : '');
@@ -6654,14 +7588,19 @@ function placeAt(type, point) {
     toast(type === 'island' ? '島嶼升起' : type === 'mountain' ? '山脈刻入地形' : '洞穴刻入地形');
     clearPlacementTool();
   } else {
-    const entry = createObject(type, {}, point.clone());
+    const placeProps = isChimera(type) ? { ...getChimeraDraft() } : {};
+    const entry = createObject(type, placeProps, point.clone());
+    if (isChimera(type) && entry?.props?.beastName) {
+      entry.name = allocName(entry.props.beastName, collectTakenNames({ kind: 'object', id: entry.id }));
+      syncMobNameTag(entry);
+    }
     selectObject(entry.mesh);
     const snap = serializeObject(entry);
     pushCmd({
       undo: () => { const e = state.objects.find((o) => o.id === entry.id); if (e) removeObject(e); },
       redo: () => createObject(snap.type, snap.props, new THREE.Vector3(...snap.position)),
     });
-    toast(`放置 ${PRESETS.find((p) => p.type === type)?.label || type}`);
+    toast(`放置 ${entry.name || PRESETS.find((p) => p.type === type)?.label || type}`);
     clearPlacementTool();
   }
 }
@@ -6778,6 +7717,18 @@ window.addEventListener('pointermove', (e) => {
 
   if (!fd.moved) {
     fd.moved = true;
+    // Wander pose is visual-only — relocate from placement home, not live AI offset
+    if (usesMobBrain(fd.mesh.userData?.type)) {
+      snapMobToPlacement(fd.mesh);
+      fd.planeY = fd.mesh.position.y;
+      fd.yOffset = fd.mesh.position.y - terrainAnchorY(fd.mesh, fd.mesh.position.x, fd.mesh.position.z);
+      const hit0 = hitXZPlaneAt(e, fd.planeY);
+      if (hit0) {
+        fd.grabX = fd.mesh.position.x - hit0.x;
+        fd.grabZ = fd.mesh.position.z - hit0.z;
+      }
+      fd.startPos.copy(fd.mesh.position);
+    }
     fd.startAABB = measureObjectWorldAABB(fd.mesh);
     transformDragging = true;
     buildSelectSuppress = true;
@@ -6808,7 +7759,16 @@ function endFreeBodyDrag(e) {
   transformDragging = !!transform.dragging;
 
   if (!fd.moved) {
-    // Click — normal buildSelectPointer / handleBuildSelectClick path selects the object
+    // Capture-phase freeBodyDrag calls stopImmediatePropagation, so the bubble
+    // pointerdown never arms buildSelectPointer. Select the clicked object here.
+    if (state.mode === 'build' && !buildSelectSuppress) {
+      const additive = wantsAdditive(e);
+      if (!additive && state.selectedObj === fd.mesh && state.multi.length <= 1) {
+        deselectAll();
+      } else {
+        selectObject(fd.mesh, { additive });
+      }
+    }
     return;
   }
 
@@ -6822,10 +7782,14 @@ function endFreeBodyDrag(e) {
     rotation: [mesh.rotation.x, mesh.rotation.y, mesh.rotation.z],
     scale: mesh.scale.toArray(),
   };
-  if (isMob(mesh.userData?.type)) setMobHome(mesh, mesh.position.x, mesh.position.z);
+  // Physical drag finished — bake new placement home (never from wander-only clicks)
+  if (usesMobBrain(mesh.userData?.type)) {
+    setMobHome(mesh, mesh.position.x, mesh.position.z);
+  }
   if (entry) syncObjectTransformProps(entry);
   if (mesh.userData?.type === 'water') rebuildCompositeHeightMap();
   selectObject(mesh);
+  updateMobRadiusHelper();
   const after = snapshotXformForUndo();
   if (entry && before.id != null && after && xformSnapChanged(before, after)) {
     pushCmd({
@@ -7317,6 +8281,9 @@ function setMode(mode) {
 }
 
 document.querySelectorAll('.mode-btn').forEach((b) => b.addEventListener('click', () => setMode(b.dataset.mode)));
+document.querySelectorAll('.workspace-switch .ws-btn').forEach((b) => {
+  b.addEventListener('click', () => setWorkspace(b.dataset.workspace));
+});
 document.getElementById('btn-code').addEventListener('click', () => openCodeModal());
 document.getElementById('btn-list').addEventListener('click', () => {
   state.showListPanel = !state.showListPanel;
@@ -7515,7 +8482,7 @@ function syncIslandSliders() {
 // ═══════════════════════════════════════════════════════════
 function serializeObject(entry) {
   syncObjectTransformProps(entry);
-  if (isMob(entry.type)) syncMobOriginToProps(entry);
+  if (usesMobBrain(entry.type)) syncMobOriginToProps(entry);
   // Persist full props bag (cluster, mob showName/stationary/wander/flyHeight/origin, colors, hitbox, …)
   const props = {
     ...entry.props,
@@ -7589,9 +8556,9 @@ function pasteObjectFromClipboard() {
     entry.mesh.rotation.y = snap.props.rotation;
   }
   syncObjectTransformProps(entry);
-  if (isMob(entry.type)) {
+  if (usesMobBrain(entry.type)) {
     setMobHome(entry.mesh, ox, oz);
-    if (isFlyingMob(entry.type) || isSwimMob(entry.type)) {
+    if (isFlyingMob(entry.type, entry.props) || isSwimMob(entry.type, entry.props)) {
       const m = entry.mesh.userData.mob;
       if (m) {
         m.homeY = oy;
@@ -7878,7 +8845,7 @@ function loadMap(data) {
       entry.mesh.position.y = o.position[1];
     }
     // Nametag + wander origin after saved name / props are applied
-    if (isMob(entry.type)) {
+    if (usesMobBrain(entry.type)) {
       applyMobOriginFromProps(entry);
       syncMobNameTag(entry);
     }
@@ -8186,8 +9153,7 @@ document.getElementById('gfx-style-seg')?.addEventListener('click', (e) => {
 // ═══════════════════════════════════════════════════════════
 // Play mode — FOV, slope speed, 1st/3rd person + ancient walker
 // ═══════════════════════════════════════════════════════════
-// Character ~1.76 mesh × 0.42 ≈ 0.74 tall; trees default ~4–5.5 (taller than player)
-const PLAY_CHAR_SCALE = 0.42;
+// Character skins come from characters/*.glb (see CHARACTERS)
 const play = {
   active: false, flying: false, thirdPerson: false, sitting: false,
   velocity: new THREE.Vector3(),
@@ -8210,6 +9176,7 @@ const play = {
 syncEditGridVisibility();
 const playCamera = new THREE.PerspectiveCamera(75, 1, 0.08, 300);
 
+// Unused after GLB skins — keep helper for any future procedural props
 function matPlay(color, opts = {}) {
   const flat = gfx.style === 'shanshui' || gfx.style === 'hanmo';
   const rough = gfx.style === 'natural' ? 0.68 : (gfx.style === 'hanmo' ? 0.78 : 0.88);
@@ -8236,209 +9203,67 @@ function lerpAngleToward(cur, target, t) {
   return cur + (target - cur) * t;
 }
 
-/** Stylized archaic wanderer — robe, topknot, two-bone limbs for walk cycle */
-function createPlayCharacter() {
-  const root = new THREE.Group();
-  root.name = 'playCharacter';
-  root.scale.setScalar(PLAY_CHAR_SCALE);
-  const skin = 0xc4a882;
-  const robe = 0x6a5a48;
-  const robeDark = 0x4a3e34;
-  const hair = 0x2a2420;
-  const sash = 0x8a6060;
-  const cloth = 0xb8a888;
-
-  const hips = new THREE.Group();
-  // Feet sit at y≈0; hips ≈ thigh+calf+foot height
-  hips.position.y = 0.78;
-  root.add(hips);
-
-  // Torso / wrapped robe (faces +Z — rotated to match walk yaw)
-  const torso = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.26, 0.55, 8), matPlay(robe));
-  torso.position.y = 0.28;
-  torso.castShadow = true;
-  hips.add(torso);
-  const chestFold = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.28, 0.08), matPlay(robeDark));
-  chestFold.position.set(0, 0.32, 0.14);
-  hips.add(chestFold);
-  const skirt = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.34, 0.42, 8), matPlay(robeDark));
-  skirt.position.y = -0.12;
-  hips.add(skirt);
-  const sashM = new THREE.Mesh(new THREE.TorusGeometry(0.24, 0.035, 5, 12), matPlay(sash));
-  sashM.rotation.x = Math.PI / 2;
-  sashM.position.y = 0.05;
-  hips.add(sashM);
-  const sashTail = new THREE.Mesh(new THREE.BoxGeometry(0.08, 0.36, 0.03), matPlay(sash));
-  sashTail.position.set(0.02, -0.14, 0.22);
-  hips.add(sashTail);
-
-  // Head + detailed archaic face
-  const headGroup = new THREE.Group();
-  headGroup.position.y = 0.78;
-  hips.add(headGroup);
-
-  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.08, 0.1, 6), matPlay(skin));
-  neck.position.y = -0.18;
-  headGroup.add(neck);
-
-  const skull = new THREE.Mesh(new THREE.SphereGeometry(0.155, 12, 10), matPlay(skin));
-  skull.scale.set(1.02, 1.08, 0.98);
-  headGroup.add(skull);
-
-  // Jaw / chin
-  const jaw = new THREE.Mesh(new THREE.SphereGeometry(0.1, 10, 8), matPlay(skin));
-  jaw.position.set(0, -0.08, 0.04);
-  jaw.scale.set(0.95, 0.7, 0.85);
-  headGroup.add(jaw);
-
-  // Ears
-  for (const side of [-1, 1]) {
-    const ear = new THREE.Mesh(new THREE.SphereGeometry(0.045, 6, 5), matPlay(skin));
-    ear.position.set(side * 0.15, 0.0, -0.02);
-    ear.scale.set(0.45, 1.1, 0.7);
-    headGroup.add(ear);
-  }
-
-  // Brow ridge
-  const brow = new THREE.Mesh(new THREE.BoxGeometry(0.2, 0.035, 0.06), matPlay(skin));
-  brow.position.set(0, 0.06, 0.12);
-  brow.rotation.x = -0.15;
-  headGroup.add(brow);
-
-  function makeEye(side) {
-    const g = new THREE.Group();
-    g.position.set(side * 0.055, 0.02, 0.13);
-    const white = new THREE.Mesh(new THREE.SphereGeometry(0.032, 8, 6), matPlay(0xf2ebe0));
-    white.scale.set(1, 0.85, 0.7);
-    g.add(white);
-    const iris = new THREE.Mesh(new THREE.SphereGeometry(0.018, 8, 6), matPlay(0x3a4a42));
-    iris.position.z = 0.018;
-    g.add(iris);
-    const pupil = new THREE.Mesh(new THREE.SphereGeometry(0.009, 6, 5), matPlay(0x12100e));
-    pupil.position.z = 0.028;
-    g.add(pupil);
-    // upper lid shadow
-    const lid = new THREE.Mesh(new THREE.BoxGeometry(0.055, 0.012, 0.02), matPlay(skin));
-    lid.position.set(0, 0.022, 0.02);
-    g.add(lid);
-    headGroup.add(g);
-    return g;
-  }
-  const eyeL = makeEye(-1);
-  const eyeR = makeEye(1);
-
-  // Nose
-  const noseBridge = new THREE.Mesh(new THREE.BoxGeometry(0.035, 0.07, 0.04), matPlay(skin));
-  noseBridge.position.set(0, -0.01, 0.145);
-  headGroup.add(noseBridge);
-  const noseTip = new THREE.Mesh(new THREE.SphereGeometry(0.028, 7, 6), matPlay(0xb8926e));
-  noseTip.position.set(0, -0.04, 0.165);
-  noseTip.scale.set(1, 0.85, 1.1);
-  headGroup.add(noseTip);
-
-  // Mouth
-  const lipUpper = new THREE.Mesh(new THREE.BoxGeometry(0.07, 0.012, 0.02), matPlay(0xa07068));
-  lipUpper.position.set(0, -0.09, 0.145);
-  headGroup.add(lipUpper);
-  const lipLower = new THREE.Mesh(new THREE.BoxGeometry(0.065, 0.014, 0.022), matPlay(0x8a6058));
-  lipLower.position.set(0, -0.105, 0.142);
-  headGroup.add(lipLower);
-
-  // Cheek tint
-  for (const side of [-1, 1]) {
-    const cheek = new THREE.Mesh(new THREE.SphereGeometry(0.04, 6, 5), matPlay(0xc49882, { transparent: true, opacity: 0.55 }));
-    cheek.position.set(side * 0.1, -0.04, 0.1);
-    cheek.scale.set(0.7, 0.55, 0.4);
-    headGroup.add(cheek);
-  }
-
-  // Hair + topknot (archaic 髻)
-  const hairCap = new THREE.Mesh(new THREE.SphereGeometry(0.162, 10, 8), matPlay(hair));
-  hairCap.position.y = 0.04;
-  hairCap.scale.set(1.05, 0.72, 1.05);
-  headGroup.add(hairCap);
-  const sideHairL = new THREE.Mesh(new THREE.SphereGeometry(0.06, 6, 5), matPlay(hair));
-  sideHairL.position.set(-0.12, -0.02, -0.02);
-  sideHairL.scale.set(0.7, 1.2, 0.8);
-  headGroup.add(sideHairL);
-  const sideHairR = sideHairL.clone();
-  sideHairR.position.x = 0.12;
-  headGroup.add(sideHairR);
-  const topknot = new THREE.Mesh(new THREE.SphereGeometry(0.07, 8, 6), matPlay(hair));
-  topknot.position.set(0, 0.2, -0.02);
-  headGroup.add(topknot);
-  const knotBand = new THREE.Mesh(new THREE.TorusGeometry(0.05, 0.015, 4, 10), matPlay(cloth));
-  knotBand.position.copy(topknot.position);
-  knotBand.rotation.x = Math.PI / 2;
-  headGroup.add(knotBand);
-
-  function makeArm(side) {
-    const shoulder = new THREE.Group();
-    shoulder.position.set(side * 0.28, 0.48, 0);
-    const upper = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.065, 0.32, 6), matPlay(skin));
-    upper.geometry.translate(0, -0.16, 0);
-    shoulder.add(upper);
-    const elbow = new THREE.Group();
-    elbow.position.y = -0.32;
-    const forearm = new THREE.Mesh(new THREE.CylinderGeometry(0.045, 0.055, 0.28, 6), matPlay(skin));
-    forearm.geometry.translate(0, -0.14, 0);
-    elbow.add(forearm);
-    const hand = new THREE.Mesh(new THREE.SphereGeometry(0.05, 6, 5), matPlay(skin));
-    hand.position.y = -0.3;
-    elbow.add(hand);
-    // short sleeve cuff
-    const cuff = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.07, 0.08, 6), matPlay(robe));
-    cuff.position.y = -0.02;
-    shoulder.add(cuff);
-    shoulder.add(elbow);
-    hips.add(shoulder);
-    return { shoulder, elbow, upper, forearm };
-  }
-
-  function makeLeg(side) {
-    const hip = new THREE.Group();
-    hip.position.set(side * 0.1, 0, 0);
-    const thigh = new THREE.Mesh(new THREE.CylinderGeometry(0.07, 0.08, 0.38, 6), matPlay(robeDark));
-    thigh.geometry.translate(0, -0.19, 0);
-    hip.add(thigh);
-    const knee = new THREE.Group();
-    knee.position.y = -0.38;
-    const calf = new THREE.Mesh(new THREE.CylinderGeometry(0.055, 0.065, 0.36, 6), matPlay(skin));
-    calf.geometry.translate(0, -0.18, 0);
-    knee.add(calf);
-    const foot = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.05, 0.18), matPlay(0x3a322c));
-    foot.position.set(0, -0.38, 0.04);
-    knee.add(foot);
-    // ankle wrap
-    const wrap = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.06, 6), matPlay(cloth));
-    wrap.position.y = -0.32;
-    knee.add(wrap);
-    hip.add(knee);
-    hips.add(hip);
-    return { hip, knee, thigh, calf };
-  }
-
-  const leftArm = makeArm(-1);
-  const rightArm = makeArm(1);
-  const leftLeg = makeLeg(-1);
-  const rightLeg = makeLeg(1);
-
-  // Rest pose — slight arm hang
-  leftArm.shoulder.rotation.z = 0.12;
-  rightArm.shoulder.rotation.z = -0.12;
-
-  root.visible = false;
-  scene.add(root);
-  return {
-    root, hips, head: headGroup,
-    leftArm, rightArm, leftLeg, rightLeg,
-    eyeL, eyeR, lipLower,
-  };
+const PLAY_SKIN_KEY = 'shanhai-play-skin';
+function loadSavedPlaySkin() {
+  try {
+    const id = localStorage.getItem(PLAY_SKIN_KEY);
+    if (id && CHARACTERS.isNpc(id)) return id;
+  } catch { /* ignore */ }
+  return CHARACTERS.DEFAULT_SKIN;
+}
+function savePlaySkin(id) {
+  try { localStorage.setItem(PLAY_SKIN_KEY, id); } catch { /* ignore */ }
 }
 
-play.parts = createPlayCharacter();
+function syncPlayBodyFromSkin() {
+  const h = play.parts?.height || 0.85;
+  play.eyeHeight = Math.max(0.45, h * 0.82);
+  play.sitEyeHeight = play.eyeHeight * 0.55;
+  play.camHeight = Math.max(0.7, h * 0.95);
+}
+
+function createPlayCharacter(skinId) {
+  const parts = CHARACTERS.createPlayerSkin(skinId || loadSavedPlaySkin());
+  scene.add(parts.root);
+  return parts;
+}
+
+function setPlaySkin(skinId, opts = {}) {
+  const id = CHARACTERS.isNpc(skinId) ? skinId : CHARACTERS.DEFAULT_SKIN;
+  const wasVisible = !!(play.character && play.character.visible);
+  play.parts = CHARACTERS.swapPlayerSkin(play.parts, id);
+  play.character = play.parts.root;
+  play.character.visible = wasVisible && play.active && play.thirdPerson;
+  applyMeshShadows(play.character, gfxShadowsOn());
+  syncPlayBodyFromSkin();
+  savePlaySkin(id);
+  document.querySelectorAll('#play-skin-row [data-skin]').forEach((b) => {
+    b.classList.toggle('on', b.dataset.skin === id);
+  });
+  if (!opts.silent) toast(`皮膚 · ${id}`);
+}
+
+function buildPlaySkinButtons() {
+  const row = document.getElementById('play-skin-row');
+  if (!row) return;
+  row.innerHTML = '';
+  CHARACTERS.listSkins().forEach((s) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'hud-btn' + (s.id === (play.parts?.skinId || CHARACTERS.DEFAULT_SKIN) ? ' on' : '');
+    btn.dataset.skin = s.id;
+    btn.title = s.label;
+    btn.textContent = `${s.icon} ${s.label}`;
+    btn.addEventListener('click', () => setPlaySkin(s.id));
+    row.appendChild(btn);
+  });
+}
+
+play.parts = createPlayCharacter(loadSavedPlaySkin());
 play.character = play.parts.root;
 applyMeshShadows(play.character, gfxShadowsOn());
+syncPlayBodyFromSkin();
+buildPlaySkinButtons();
 
 function setPlayFov(v) {
   play.fov = Math.max(40, Math.min(110, +v));
@@ -8490,181 +9315,36 @@ function animatePlayCharacter(dt) {
 
   const airborne = !play.onGround && !play.flying && !play.sitting && !play.swimming;
   const ascending = airborne && play.velocity.y > 0;
-  const descending = airborne && play.velocity.y <= 0;
-  const landing = play.landTimer > 0 && !airborne && !play.swimming;
-  const swimming = play.swimming && !play.flying && !play.sitting;
-  const climbing = play.animMode === 'climb' || (play.climbing && play.onGround);
   const moving = play.moving && play.onGround && !play.flying && !play.sitting && !play.swimming;
-  const idle = !moving && !airborne && !landing && !play.sitting && !play.flying
-    && !climbing && !swimming && play.animMode === 'idle';
+  const idle = !moving && !airborne && !play.sitting && !play.flying && !play.swimming && play.animMode === 'idle';
 
-  let blend = Math.min(1, dt * 12);
-  if (ascending || descending) blend = Math.min(1, dt * 32);
-  else if (landing) blend = Math.min(1, dt * 20);
-  else if (swimming) blend = Math.min(1, dt * 10);
-  else if (idle) blend = Math.min(1, dt * 7);
-
-  let hipsY = 0.78, hipsX = 0, hipsZ = 0;
-  let lHipX = 0, rHipX = 0, lKneeX = 0, rKneeX = 0;
-  let lArmX = 0, rArmX = 0, lElbowX = -0.15, rElbowX = -0.15;
-  let lArmZ = 0.12, rArmZ = -0.12;
-  let headX = 0, headY = 0, headZ = 0;
-
-  if (play.sitting) {
-    hipsY = 0.42;
-    hipsX = 0.12;
-    lHipX = -1.35; rHipX = -1.35;
-    lKneeX = 1.45; rKneeX = 1.45;
-    lArmX = -0.55; rArmX = -0.55;
-    lElbowX = -0.85; rElbowX = -0.85;
-    lArmZ = 0.35; rArmZ = -0.35;
-    play.idlePhase += dt * 1.2;
-    headY = Math.sin(play.idlePhase * 0.7) * 0.04;
-  } else if (swimming) {
-    // Breaststroke-ish: arms sweep out/forward, legs frog-kick — no walk sway
-    const strokePerM = 9 / Math.max(0.5, play.speed);
-    if (play.moving) play.walkPhase += (play.frameMoveDist || 0) * strokePerM;
-    else play.walkPhase += dt * 1.6;
-    play.idlePhase *= 0.9;
-    const t = play.walkPhase;
-    const stroke = Math.sin(t);
-    const kick = Math.sin(t * 2);
-    hipsY = 0.62 + Math.sin(t * 0.5) * 0.03;
-    hipsX = 0.35 + Math.max(0, -stroke) * 0.08;
-    hipsZ = 0;
-    lHipX = 0.55 + kick * 0.45; rHipX = 0.55 - kick * 0.45;
-    lKneeX = 0.9 + Math.max(0, kick) * 0.55;
-    rKneeX = 0.9 + Math.max(0, -kick) * 0.55;
-    // Arms sweep wide in front (not opposite walk sway)
-    lArmX = -0.35 - stroke * 0.55;
-    rArmX = -0.35 + stroke * 0.55;
-    lElbowX = -0.95 - Math.max(0, stroke) * 0.25;
-    rElbowX = -0.95 - Math.max(0, -stroke) * 0.25;
-    lArmZ = 0.55 + Math.max(0, stroke) * 0.45;
-    rArmZ = -0.55 - Math.max(0, -stroke) * 0.45;
-    headX = 0.2;
-    headY = stroke * 0.06;
-  } else if (ascending) {
-    hipsY = 0.78;
-    hipsX = 0.08;
-    lHipX = -0.55; rHipX = 0.25;
-    lKneeX = 0.55; rKneeX = 0.7;
-    lArmX = -1.25; rArmX = -1.1;
-    lElbowX = -0.35; rElbowX = -0.4;
-    lArmZ = 0.35; rArmZ = -0.35;
-    headX = -0.08;
-  } else if (descending) {
-    hipsY = 0.78;
-    hipsX = -0.12;
-    lHipX = 0.7; rHipX = 0.55;
-    lKneeX = 1.15; rKneeX = 1.05;
-    lArmX = -0.75; rArmX = -0.85;
-    lElbowX = -0.55; rElbowX = -0.5;
-    lArmZ = 0.7; rArmZ = -0.7;
-    headX = 0.1;
-  } else if (landing) {
-    const crouch = Math.min(1, play.landTimer / 0.12);
-    hipsY = 0.78 - crouch * 0.22;
-    hipsX = 0.2 * crouch;
-    lHipX = -0.6 * crouch; rHipX = -0.55 * crouch;
-    lKneeX = 1.15 * crouch; rKneeX = 1.1 * crouch;
-    lArmX = -0.45 * crouch; rArmX = -0.4 * crouch;
-    lElbowX = -0.55; rElbowX = -0.55;
-  } else if (climbing) {
-    // Haul climb: fixed cadence (not tied to move speed)
-    play.walkPhase += dt * 5.5;
-    play.idlePhase *= 0.9;
-    const t = play.walkPhase;
-    const a = Math.sin(t);
-    const b = Math.sin(t + Math.PI);
-    const reachL = Math.max(0, a);
-    const reachR = Math.max(0, b);
-    hipsY = 0.72 + Math.max(reachL, reachR) * 0.04;
-    hipsX = 0.28;
-    hipsZ = (reachL - reachR) * 0.02;
-    lHipX = 0.15 + reachL * 1.05; rHipX = 0.15 + reachR * 1.05;
-    lKneeX = 0.45 + reachL * 1.1; rKneeX = 0.45 + reachR * 1.1;
-    lArmX = -0.85 - reachL * 0.75; rArmX = -0.85 - reachR * 0.75;
-    lElbowX = -1.05 - reachL * 0.2; rElbowX = -1.05 - reachR * 0.2;
-    lArmZ = 0.08; rArmZ = -0.08;
-    headX = 0.18;
-    headY = (reachL - reachR) * 0.03;
-  } else if (moving) {
+  if (moving) {
     const phasePerMeter = 11 / Math.max(0.5, play.speed);
     play.walkPhase += (play.frameMoveDist || 0) * phasePerMeter;
     play.idlePhase *= 0.9;
-    const swing = Math.sin(play.walkPhase);
-    const swing2 = Math.sin(play.walkPhase + Math.PI);
-    const bob = Math.abs(swing) * 0.03;
-    hipsY = 0.78 + bob;
-    hipsX = 0.06;
-    hipsZ = swing * 0.04;
-    lHipX = swing * 0.85; rHipX = swing2 * 0.85;
-    lKneeX = Math.max(0, -swing) * 0.7;
-    rKneeX = Math.max(0, -swing2) * 0.7;
-    lArmX = swing2 * 0.65; rArmX = swing * 0.65;
-    lElbowX = -0.15 - Math.max(0, swing2) * 0.35;
-    rElbowX = -0.15 - Math.max(0, swing) * 0.35;
-    headY = swing * 0.05;
-  } else if (idle) {
+  } else if (play.swimming && play.moving) {
+    play.walkPhase += (play.frameMoveDist || 0) * 9;
+  } else if (idle || play.flying) {
     play.idlePhase += dt;
     play.walkPhase *= 0.88;
-    const t = play.idlePhase;
-    const breath = Math.sin(t * 1.6);
-    const sway = Math.sin(t * 0.9);
-    const sway2 = Math.sin(t * 0.9 + 1.3);
-    hipsY = 0.78 + breath * 0.012;
-    hipsX = breath * 0.02;
-    hipsZ = sway * 0.015;
-    lHipX = sway * 0.04; rHipX = -sway * 0.04;
-    lKneeX = 0.05; rKneeX = 0.05;
-    lArmX = -0.05 + sway2 * 0.08;
-    rArmX = -0.08 + sway * 0.07;
-    lElbowX = -0.2 + breath * 0.06;
-    rElbowX = -0.18 + breath * 0.05;
-    lArmZ = 0.14 + sway * 0.04;
-    rArmZ = -0.14 - sway2 * 0.04;
-    headX = breath * 0.03;
-    headY = sway * 0.06;
-    headZ = sway2 * 0.025;
-    if (p.lipLower) p.lipLower.scale.y = 1 + breath * 0.08;
-    if (p.eyeL && p.eyeR) {
-      const blink = (Math.sin(t * 0.35) > 0.92) ? 0.15 : 1;
-      p.eyeL.scale.y = blink;
-      p.eyeR.scale.y = blink;
-    }
-  } else {
-    play.walkPhase *= 0.9;
+  } else if (airborne) {
+    play.walkPhase *= 0.95;
   }
 
-  if (!idle && p.eyeL && p.eyeR) {
-    p.eyeL.scale.y = lerpAngleToward(p.eyeL.scale.y, 1, blend);
-    p.eyeR.scale.y = lerpAngleToward(p.eyeR.scale.y, 1, blend);
-  }
-
-  p.hips.position.y = lerpAngleToward(p.hips.position.y, hipsY, blend);
-  p.hips.rotation.y = play.yaw + Math.PI;
-  p.hips.rotation.x = lerpAngleToward(p.hips.rotation.x, hipsX, blend);
-  p.hips.rotation.z = lerpAngleToward(p.hips.rotation.z, hipsZ, blend);
-
-  p.leftLeg.hip.rotation.x = lerpAngleToward(p.leftLeg.hip.rotation.x, lHipX, blend);
-  p.rightLeg.hip.rotation.x = lerpAngleToward(p.rightLeg.hip.rotation.x, rHipX, blend);
-  p.leftLeg.knee.rotation.x = lerpAngleToward(p.leftLeg.knee.rotation.x, lKneeX, blend);
-  p.rightLeg.knee.rotation.x = lerpAngleToward(p.rightLeg.knee.rotation.x, rKneeX, blend);
-
-  p.leftArm.shoulder.rotation.x = lerpAngleToward(p.leftArm.shoulder.rotation.x, lArmX, blend);
-  p.rightArm.shoulder.rotation.x = lerpAngleToward(p.rightArm.shoulder.rotation.x, rArmX, blend);
-  p.leftArm.shoulder.rotation.z = lerpAngleToward(p.leftArm.shoulder.rotation.z, lArmZ, blend);
-  p.rightArm.shoulder.rotation.z = lerpAngleToward(p.rightArm.shoulder.rotation.z, rArmZ, blend);
-  p.leftArm.elbow.rotation.x = lerpAngleToward(p.leftArm.elbow.rotation.x, lElbowX, blend);
-  p.rightArm.elbow.rotation.x = lerpAngleToward(p.rightArm.elbow.rotation.x, rElbowX, blend);
-
-  if (p.head) {
-    p.head.rotation.x = lerpAngleToward(p.head.rotation.x, headX, blend);
-    p.head.rotation.y = lerpAngleToward(p.head.rotation.y, headY, blend);
-    p.head.rotation.z = lerpAngleToward(p.head.rotation.z, headZ, blend);
-  }
+  CHARACTERS.animateSkinVisual(p.visual, {
+    moving,
+    airborne,
+    ascending,
+    sitting: play.sitting,
+    swimming: play.swimming,
+    flying: play.flying,
+    walkPhase: play.walkPhase,
+    idlePhase: play.idlePhase,
+    landTimer: play.landTimer,
+    yaw: play.yaw,
+  }, dt);
 }
+
 
 /** Find a gentle, low spawn — never on peaks */
 function findSpawnPoint() {
@@ -8692,6 +9372,7 @@ function findSpawnPoint() {
 }
 
 function enterPlay() {
+  if (state.workspace === 'beast') setWorkspace('island');
   deselectAll();
   transform.enabled = false;
   transform.getHelper().visible = false;
@@ -8702,7 +9383,7 @@ function enterPlay() {
   syncEditGridVisibility();
   // Wander radius stays centered on saved origin, not wherever the mob was mid-path
   state.objects.forEach((o) => {
-    if (isMob(o.type)) applyMobOriginFromProps(o);
+    if (usesMobBrain(o.type)) applyMobOriginFromProps(o);
   });
   state.mode = 'play';
   document.body.classList.add('playing');
@@ -9284,18 +9965,23 @@ function freezeAmbientAnims() {
         c.scale.y = 1;
       }
     }
-    if (isMob(o.type) && o.mesh) {
+    if (usesMobBrain(o.type) && o.mesh) {
       const parts = ensureMobParts(o.mesh);
       if (parts.wingL) parts.wingL.rotation.z = -0.15;
       if (parts.wingR) parts.wingR.rotation.z = 0.15;
       if (parts.armL) parts.armL.rotation.x = 0;
       if (parts.armR) parts.armR.rotation.x = 0;
       if (parts.tail) parts.tail.rotation.y = 0;
+      const visual = o.mesh.getObjectByName?.('npcVisual');
+      if (visual) {
+        visual.position.y = 0;
+        visual.rotation.z = 0;
+      }
       const m = o.mesh.userData.mob;
       if (m) {
         o.mesh.position.x = m.homeX;
         o.mesh.position.z = m.homeZ;
-        if (isFlyingMob(o.type) || isSwimMob(o.type)) {
+        if (isFlyingMob(o.type, o.props) || isSwimMob(o.type, o.props)) {
           o.mesh.position.y = m.homeY ?? o.mesh.position.y;
         } else {
           o.mesh.position.y = sampleHeight(m.homeX, m.homeZ);
@@ -9324,6 +10010,7 @@ function animate() {
   _plantAnimTick++;
 
   if (!play.active) {
+    if (state.workspace === 'beast') return; // 異獸工作室 has its own WebGL loop
     if (anims) {
       updateMobs(dt);
       // Skip plant sway every other frame when the island is dense
@@ -9390,32 +10077,53 @@ function warmThumbsForTab(tabId) {
 }
 
 async function bootEditor() {
-  setBootProgress(8, '準備場景…');
+  setBootProgress(4, '準備場景…');
   await new Promise((r) => requestAnimationFrame(r));
-  setBootProgress(25, '升起島嶼…');
+  // Characters tab is hidden — skip GLB preload (still available if tab re-enabled)
+  const charsTab = HOTBAR_TABS.find((t) => t.id === 'chars');
+  if (charsTab && !charsTab.hidden) {
+    setBootProgress(8, '載入人物模型…');
+    try {
+      await CHARACTERS.preload((frac, label) => {
+        setBootProgress(8 + Math.round(frac * 42), label || '載入人物…');
+      });
+    } catch (err) {
+      console.error('Character preload failed', err);
+      toast('人物模型載入失敗 · 請確認 characters/ 內的 GLB');
+    }
+  } else {
+    setBootProgress(48, '略過人物模型…');
+  }
+  setBootProgress(50, '載入異獸部件…');
+  try {
+    await CHIMERA.preloadParts((frac, label) => {
+      setBootProgress(50 + Math.round(frac * 8), label || '載入異獸部件…');
+    });
+  } catch (err) {
+    console.error('Chimera part preload failed', err);
+    toast('異獸頭模載入失敗 · 請確認 assets 內的頭／尾 GLB');
+  }
+  setPlaySkin(loadSavedPlaySkin(), { silent: true });
+  buildPlaySkinButtons();
+  setBootProgress(52, '升起島嶼…');
   createFeature('island', { texture: 'default' }, 0, 0);
-  createObject('松', {}, new THREE.Vector3(2, 0, 1.5));
-  createObject('竹', {}, new THREE.Vector3(3.2, 0, 0.4));
-  createObject('菊', {}, new THREE.Vector3(1.2, 0, 2.0));
-  createObject('rock', { roughness: 0.7 }, new THREE.Vector3(-1.8, 0, 1.2));
-  createObject('shrine', { style: 'cairn' }, new THREE.Vector3(0, 0, -1.2));
-  createObject('firepit', {}, new THREE.Vector3(0.9, 0, 0.2));
   history.undo.length = 0;
   updateUndoButtons();
-  setBootProgress(45, '畫面設定…');
+  setBootProgress(62, '畫面設定…');
   applyGraphicsSettings({ rebuildTerrain: true });
-  setBootProgress(55, '繪製圖示…');
+  setBootProgress(70, '繪製圖示…');
   await warmThumbsForTab(state.hotbarTab);
   rebuildHotbarSlots();
   setBootProgress(96, '就緒');
   await new Promise((r) => requestAnimationFrame(r));
   hideBootScreen();
+  setWorkspace('beast');
   animate();
-  toast('地形欄可加島 · 選島調材質與顏色');
+  toast('異獸造物 · 可切換至島嶼');
   // Warm remaining hotbar thumbs in the background (avoids first-tab hitch later)
   (async () => {
     for (const tab of HOTBAR_TABS) {
-      if (tab.id === state.hotbarTab) continue;
+      if (tab.hidden || tab.id === state.hotbarTab) continue;
       const list = presetsForTab(tab.id);
       for (const pr of list) {
         if (thumbCache[pr.type]) continue;
