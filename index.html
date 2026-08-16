@@ -940,6 +940,12 @@
           <input type="text" id="beast-name" maxlength="24" placeholder="異獸之名"
             style="width:100%;box-sizing:border-box;padding:6px 10px;border-radius:6px;border:1px solid #3a3830;background:#1a1916;color:var(--bone);font-size:0.9rem"/>
         </div>
+        <div class="row-btns" style="margin-top:10px;gap:6px">
+          <button type="button" class="hud-btn" id="beast-btn-save" style="flex:1" title="存入圖鑑，可在島嶼「獸」欄拖放">存入圖鑑</button>
+          <button type="button" class="hud-btn" id="beast-btn-to-island" style="flex:1" title="存檔並切到島嶼放置">放入島嶼</button>
+        </div>
+        <div class="group-label" style="margin-top:12px">已存圖鑑</div>
+        <div id="beast-library" class="layer-list" style="max-height:9.5em"></div>
       </div>
       <div id="beast-tabs" role="tablist">
         <button type="button" class="btab on" data-btab="body">身</button>
@@ -1088,7 +1094,7 @@ import { installPlants } from './plants.js';
 import { installStructures } from './structures.js';
 import { installAnimals } from './animals.js';
 import { installCharacters } from './characters.js';
-import { installChimera } from './chimera.js?v=45';
+import { installChimera } from './chimera.js?v=46';
 
 // ═══════════════════════════════════════════════════════════
 // Editable terrain — 0.25 world-units per cell (smooth paths / sculpt curves)
@@ -1184,7 +1190,7 @@ const HOTBAR_TABS = [
   // Hidden while models are being replaced — presets + makers stay registered
   { id: 'trees',   label: '木',   hidden: true },
   { id: 'flowers', label: '草花', hidden: true },
-  { id: 'beasts',  label: '獸',   hidden: true },
+  { id: 'beasts',  label: '獸',   hidden: false },
   { id: 'birds',   label: '禽',   hidden: true },
   { id: 'aqua',    label: '水族', hidden: true },
   { id: 'crawl',   label: '爬蟲', hidden: true },
@@ -4171,6 +4177,167 @@ const chimeraIsFlying = CHIMERA.isFlyingChimera;
 const chimeraIsSwim = CHIMERA.isSwimChimera;
 const updateChimeraAnims = CHIMERA.updateChimeraAnims;
 
+const BEAST_LIB_KEY = 'penglai_beast_library_v1';
+/** @type {{ id: string, name: string, recipe: object, createdAt?: number, updatedAt?: number }[]} */
+let savedBeasts = [];
+
+function chimeraTypeForSavedId(id) {
+  return `chimera_${id}`;
+}
+
+function loadBeastLibrary() {
+  try {
+    const raw = localStorage.getItem(BEAST_LIB_KEY);
+    const list = raw ? JSON.parse(raw) : [];
+    savedBeasts = Array.isArray(list) ? list.filter((b) => b && b.id && b.recipe) : [];
+  } catch {
+    savedBeasts = [];
+  }
+  savedBeasts.forEach(registerSavedBeastPreset);
+}
+
+function persistBeastLibrary() {
+  try {
+    localStorage.setItem(BEAST_LIB_KEY, JSON.stringify(savedBeasts));
+  } catch { /* quota */ }
+}
+
+function registerSavedBeastPreset(beast) {
+  if (!beast?.id) return null;
+  const type = chimeraTypeForSavedId(beast.id);
+  const recipe = CHIMERA.normalizeRecipe({
+    ...beast.recipe,
+    beastName: beast.name || beast.recipe?.beastName || '未名異獸',
+  });
+  FACTORIES[type] = (props) => CHIMERA.makeChimera({ ...recipe, ...props });
+  DEFAULT_PROPS[type] = { ...recipe };
+  const pr = {
+    type,
+    icon: '🐉',
+    label: beast.name || recipe.beastName || '異獸',
+    terrain: false,
+    mob: true,
+    tab: 'beasts',
+    chimera: true,
+    savedId: beast.id,
+  };
+  const idx = PRESETS.findIndex((p) => p.type === type);
+  if (idx >= 0) PRESETS[idx] = pr;
+  else PRESETS.push(pr);
+  if (typeof thumbCache !== 'undefined') delete thumbCache[type];
+  return pr;
+}
+
+function unregisterSavedBeastPreset(id) {
+  const type = chimeraTypeForSavedId(id);
+  const idx = PRESETS.findIndex((p) => p.type === type);
+  if (idx >= 0) PRESETS.splice(idx, 1);
+  delete FACTORIES[type];
+  delete DEFAULT_PROPS[type];
+  if (typeof thumbCache !== 'undefined') delete thumbCache[type];
+}
+
+function saveCurrentBeastToLibrary() {
+  const recipe = CHIMERA.normalizeRecipe(getChimeraDraft());
+  const name = (recipe.beastName || '').trim() || '未名異獸';
+  recipe.beastName = name;
+  // keep draft name in sync
+  const draft = getChimeraDraft();
+  draft.beastName = name;
+  syncChimeraRecipe(draft, draft);
+
+  let beast = savedBeasts.find((b) => b.name === name);
+  if (beast) {
+    beast.recipe = { ...recipe };
+    beast.updatedAt = Date.now();
+  } else {
+    beast = {
+      id: `b${Date.now().toString(36)}${Math.floor(Math.random() * 36).toString(36)}`,
+      name,
+      recipe: { ...recipe },
+      createdAt: Date.now(),
+    };
+    savedBeasts.push(beast);
+  }
+  persistBeastLibrary();
+  const pr = registerSavedBeastPreset(beast);
+  renderBeastLibrary();
+  if (state.hotbarTab === 'beasts') rebuildHotbarSlots();
+  toast(`已存入圖鑑 · ${name}`);
+  return { beast, pr };
+}
+
+function deleteSavedBeast(id) {
+  const beast = savedBeasts.find((b) => b.id === id);
+  if (!beast) return;
+  savedBeasts = savedBeasts.filter((b) => b.id !== id);
+  persistBeastLibrary();
+  unregisterSavedBeastPreset(id);
+  renderBeastLibrary();
+  if (state.hotbarTab === 'beasts') rebuildHotbarSlots();
+  if (state.selectedPreset === chimeraTypeForSavedId(id)) deselectHotbarPreset();
+  toast(`已從圖鑑移除 · ${beast.name}`);
+}
+
+function loadSavedBeastIntoDraft(id) {
+  const beast = savedBeasts.find((b) => b.id === id);
+  if (!beast) return;
+  const recipe = getChimeraDraft();
+  syncChimeraRecipe(recipe, CHIMERA.normalizeRecipe(beast.recipe));
+  renderBeastStudio();
+  toast(`已載入 · ${beast.name}`);
+}
+
+function renderBeastLibrary() {
+  const el = document.getElementById('beast-library');
+  if (!el) return;
+  if (!savedBeasts.length) {
+    el.innerHTML = '<div class="prop-empty" style="padding:6px 0">尚無存檔 · 命名後按「存入圖鑑」</div>';
+    return;
+  }
+  el.innerHTML = savedBeasts.map((b) => `
+    <div class="layer-row" data-beast-id="${b.id}">
+      <span title="${String(b.name).replace(/"/g, '&quot;')}">🐉 ${b.name}</span>
+      <button type="button" data-beast-load="${b.id}" title="載入到造物台">載</button>
+      <button type="button" data-beast-place="${b.id}" title="到島嶼放置">放</button>
+      <button type="button" data-beast-del="${b.id}" title="刪除">删</button>
+    </div>`).join('');
+  el.querySelectorAll('[data-beast-load]').forEach((btn) => {
+    btn.addEventListener('click', () => loadSavedBeastIntoDraft(btn.dataset.beastLoad));
+  });
+  el.querySelectorAll('[data-beast-place]').forEach((btn) => {
+    btn.addEventListener('click', () => sendBeastToIsland(btn.dataset.beastPlace));
+  });
+  el.querySelectorAll('[data-beast-del]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.dataset.beastDel;
+      const b = savedBeasts.find((x) => x.id === id);
+      if (b && confirm(`刪除圖鑑「${b.name}」？`)) deleteSavedBeast(id);
+    });
+  });
+}
+
+function sendBeastToIsland(savedId) {
+  let pr;
+  if (savedId) {
+    const beast = savedBeasts.find((b) => b.id === savedId);
+    if (!beast) return;
+    pr = registerSavedBeastPreset(beast);
+  } else {
+    ({ pr } = saveCurrentBeastToLibrary());
+  }
+  setWorkspace('island');
+  setHotbarTab('beasts');
+  if (pr) selectHotbarPreset(pr);
+  toast('從下方「獸」欄拖到島上，或再點地形放置');
+}
+
+function chimeraPlaceProps(type) {
+  if (type === 'chimera') return { ...getChimeraDraft() };
+  if (DEFAULT_PROPS[type]) return { ...DEFAULT_PROPS[type] };
+  return { ...getChimeraDraft() };
+}
+
 /** Mythic characters (NPC + player skins) — separate from animals */
 const CHARACTERS = installCharacters(THREE, { cprop });
 PRESETS.push(...CHARACTERS.PRESETS);
@@ -6559,6 +6726,12 @@ function renderBeastStudio() {
   refreshBeastDesc(recipe);
   updateBeastPreview(recipe);
   renderBeastPanelsOnly();
+  renderBeastLibrary();
+
+  const saveBtn = document.getElementById('beast-btn-save');
+  if (saveBtn) saveBtn.onclick = () => saveCurrentBeastToLibrary();
+  const toIslandBtn = document.getElementById('beast-btn-to-island');
+  if (toIslandBtn) toIslandBtn.onclick = () => sendBeastToIsland();
 
   document.querySelectorAll('#beast-tabs .btab').forEach((btn) => {
     btn.classList.toggle('on', btn.dataset.btab === beastTab);
@@ -6595,8 +6768,28 @@ function renderChimeraComposer() {
 
 function renderPlaceToolProps(type) {
   if (isChimera(type)) {
-    Object.assign(getChimeraDraft(), CHIMERA.normalizeRecipe(p));
-    setWorkspace('beast');
+    const el = document.getElementById('props-content');
+    const pr = PRESETS.find((p) => p.type === type);
+    const label = pr?.label || '異獸';
+    const recipe = chimeraPlaceProps(type);
+    el.innerHTML = `
+      <div class="section"><h3>放置 · ${label}</h3>
+        <p style="font-size:0.72rem;color:#8a8070;line-height:1.4;margin-bottom:8px">
+          點島面放置，或從下方「獸」欄拖出。在「異獸」工作區可繼續改裝。
+        </p>
+        <p style="font-size:0.75rem;color:var(--bone);line-height:1.45;margin:0">${CHIMERA.describeRecipe(recipe)}</p>
+        <div class="row-btns" style="margin-top:10px">
+          <button type="button" class="hud-btn" id="btn-open-beast-studio" style="flex:1">打開造物台</button>
+        </div>
+      </div>`;
+    document.getElementById('panel-right')?.classList.remove('hidden');
+    el.querySelector('#btn-open-beast-studio')?.addEventListener('click', () => {
+      if (type !== 'chimera') {
+        const id = pr?.savedId;
+        if (id) loadSavedBeastIntoDraft(id);
+      }
+      setWorkspace('beast');
+    });
     return;
   }
   const el = document.getElementById('props-content');
@@ -7257,7 +7450,7 @@ function renderThumb(type) {
     mesh = makeTerrainThumbMesh(type);
   } else if (FACTORIES[type]) {
     const props = isChimera(type)
-      ? { ...getChimeraDraft() }
+      ? chimeraPlaceProps(type)
       : { ...DEFAULT_PROPS[type] };
     mesh = FACTORIES[type](props);
     mesh.traverse((o) => {
@@ -7588,9 +7781,10 @@ function placeAt(type, point) {
     toast(type === 'island' ? '島嶼升起' : type === 'mountain' ? '山脈刻入地形' : '洞穴刻入地形');
     clearPlacementTool();
   } else {
-    const placeProps = isChimera(type) ? { ...getChimeraDraft() } : {};
-    const entry = createObject(type, placeProps, point.clone());
-    if (isChimera(type) && entry?.props?.beastName) {
+    const placeType = isChimera(type) ? 'chimera' : type;
+    const placeProps = isChimera(type) ? chimeraPlaceProps(type) : {};
+    const entry = createObject(placeType, placeProps, point.clone());
+    if (isChimera(placeType) && entry?.props?.beastName) {
       entry.name = allocName(entry.props.beastName, collectTakenNames({ kind: 'object', id: entry.id }));
       syncMobNameTag(entry);
     }
@@ -10103,6 +10297,7 @@ async function bootEditor() {
     console.error('Chimera part preload failed', err);
     toast('異獸頭模載入失敗 · 請確認 assets 內的頭／尾 GLB');
   }
+  loadBeastLibrary();
   setPlaySkin(loadSavedPlaySkin(), { silent: true });
   buildPlaySkinButtons();
   setBootProgress(52, '升起島嶼…');
