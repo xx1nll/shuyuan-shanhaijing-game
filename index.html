@@ -1094,7 +1094,7 @@ import { installPlants } from './plants.js';
 import { installStructures } from './structures.js';
 import { installAnimals } from './animals.js';
 import { installCharacters } from './characters.js';
-import { installChimera } from './chimera.js?v=46';
+import { installChimera } from './chimera.js?v=47';
 
 // ═══════════════════════════════════════════════════════════
 // Editable terrain — 0.25 world-units per cell (smooth paths / sculpt curves)
@@ -4152,7 +4152,7 @@ const isStructureType = STRUCTURES.isStructureType;
 
 /** Beasts / birds / aqua / crawlies */
 const ANIMALS = installAnimals(THREE, { mat, cprop, hash2 });
-PRESETS.push(...ANIMALS.PRESETS);
+// Keep animal factories for old map codes, but do not offer them in the hotbar.
 Object.assign(DEFAULT_PROPS, ANIMALS.DEFAULTS);
 isMob = (type) => ANIMALS.isMob(type) || (typeof isChimera === 'function' && isChimera(type));
 isFlyingMob = (type, props) => {
@@ -5353,7 +5353,11 @@ function snapObjectToTerrain(obj, opts = {}) {
       const fh = obj.userData.props?.flyHeight ?? 4;
       obj.position.y = ground + fh;
     } else {
+      // Sit the mesh AABB on the terrain (feet), not the local origin (often the belly)
       obj.position.y = ground;
+      obj.updateMatrixWorld(true);
+      const box = new THREE.Box3().setFromObject(obj);
+      if (Number.isFinite(box.min.y)) obj.position.y += ground - box.min.y;
     }
   }
 }

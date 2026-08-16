@@ -1408,6 +1408,14 @@ export function installChimera(THREE, { mat, cprop }) {
 
     root.scale.setScalar(sc);
     root.rotation.y = r.rotation || 0;
+    // Settle so the lowest point (usually feet) sits at local y=0 — not the belly.
+    // Island placement uses root.position.y = terrain height at the origin.
+    root.updateMatrixWorld(true);
+    const groundBox = new THREE.Box3().setFromObject(root);
+    if (Number.isFinite(groundBox.min.y) && Math.abs(groundBox.min.y) > 1e-6) {
+      const dy = -groundBox.min.y;
+      root.children.forEach((c) => { c.position.y += dy; });
+    }
     root.userData.isMob = true;
     root.userData.chimera = true;
     root.userData.recipe = r;
@@ -1767,7 +1775,7 @@ export function installChimera(THREE, { mat, cprop }) {
     SOUND_PRESETS,
     PATTERN_PRESETS,
     PARTS,
-    PRESETS: [{ type: TYPE, icon: '🐉', label: '造物', terrain: false, mob: true, tab: 'beasts', chimera: true }],
+    PRESETS: [],
     DEFAULTS: { [TYPE]: normalizeRecipe({}) },
     FACTORIES: { [TYPE]: makeChimera },
     partsForSlot,
