@@ -1,0 +1,53 @@
+Kunlun / 南山經
+Third-party notices (MIT / CC0 / Zlib / Apache-2.0 / CC). This project does not reuse prior Shan Hai Jing games.
+
+- three.js — MIT, https://github.com/mrdoob/three.js
+- @dgreenheck/ez-tree — MIT, https://github.com/dgreenheck/ez-tree
+- three-mesh-bvh — MIT, https://github.com/gkjohnson/three-mesh-bvh
+- postprocessing — Zlib, https://github.com/pmndrs/postprocessing
+- Draco decoder — Apache-2.0, https://github.com/google/draco
+- Ocean shading follows Tessendorf FFT/Gerstner practice as in 0-robert/open-ocean (MIT)
+- Grass instancing / wind follows the approach in CK42BB/procedural-grass-threejs (MIT)
+- Cloud / weather / star skills: CK42BB procedural-clouds, procedural-weather, procedural-stars (MIT)
+- Kenney Nature Kit and Quaternius Stylized Nature are CC0 (rocks/cliffs only; not 山海經 hero plants)
+
+Fetched art (pinned; authoring fetch, not runtime search)
+
+- tex/cassia-leaf — CC BY-SA 3.0; Honmingjun; https://commons.wikimedia.org/wiki/File:Cinnamomum_cassia_Leaf.jpg (Cinnamomum cassia · 桂)
+- tex/cassia-bark — CC0; Charlotte Baglioni; https://polyhaven.com/a/japanese_camphor_bark (Cinnamomum camphora bark (same genus as 桂) · PBR, never a generic oak stand-in)
+- tex/mulberry-leaf — CC0; Homoarborea; https://commons.wikimedia.org/wiki/File:Broussonetia_papyrifera_(2).jpg (Broussonetia papyrifera · 迷穀)
+- tex/mulberry-bark — CC0; Charlotte Baglioni; https://polyhaven.com/a/chinese_hackberry_bark (Papery furrowed bark for 構樹 / 迷穀 black grain)
+- tex/dateplum-leaf — CC BY 4.0; Tournasol7; https://commons.wikimedia.org/wiki/File:Diospyros_lotus_in_Ljubljana_BG_(3).jpg (Diospyros lotus · 棪)
+- tex/dateplum-fruit — CC BY 4.0; Tournasol7; https://commons.wikimedia.org/wiki/File:Diospyros_lotus_in_Ljubljana_BG_(2).jpg (Diospyros lotus fruit · 其子似柰而赤)
+- tex/dateplum-bark — CC0; Charlotte Baglioni; https://polyhaven.com/a/japanese_zelkova_bark (Dark flaky hardwood bark for 君遷子)
+- tex/mondo-leaf — CC0; Shabicht; https://commons.wikimedia.org/wiki/File:Japonska_ka%C4%8Dja_brada.jpg (Ophiopogon japonicus · 祝餘 其狀如韭)
+- tex/lacquer-bark — CC0; Charlotte Baglioni; https://polyhaven.com/a/chinese_cedar_bark (Red-brown fissured bark for 白䓘 赤理)
+- part/yanmu-fruit — CC0; Oliver Harries; https://polyhaven.com/a/food_apple_01 (Malus apple with calyx · 棪 其子似柰而赤 (classroom CC0 analogue; tint toward date-plum))
+- part/zhuyu-tuft — CC0; Rico Cilliers; https://polyhaven.com/a/grass_medium_02 (Scanned grassy tuft as the whole 祝餘 plant (Ophiopogon analogue; no mondo clump on Poly Haven))
+- scatter/fern — CC0; Rob Tuytel, Rico Cilliers; https://polyhaven.com/a/fern_02 (scatter undergrowth only — never 桂)
+
+Skipped / unresolved
+
+- plant/gui — No downloadable cassia/cinnamon tree GLB matched the species. Runtime uses ez-tree wood + photo atlas.
+- plant/migu — No species-matched hero GLB. Atlas + ez-tree.
+- plant/yanmu — No species-matched hero GLB. Atlas + ez-tree.
+- plant/zhuyu — No species-matched hero GLB. Photo blades on the tuft path.
+- plant/baigao — Workshop-only. Atlas + ez-tree.
+- creature/shengsheng — no-SKETCHFAB_TOKEN
+- creature/baiyuan — no-SKETCHFAB_TOKEN
+- creature/guaishen — Named mashup stays on assemble() until phase-2 part slices exist.
+- creature/lushu — no-SKETCHFAB_TOKEN
+- creature/xuangui — no-SKETCHFAB_TOKEN
+- creature/lu — no-SKETCHFAB_TOKEN
+- creature/lei — no-SKETCHFAB_TOKEN
+- creature/bochi — no-SKETCHFAB_TOKEN
+- creature/jiweihu — no-SKETCHFAB_TOKEN
+- creature/guanguan — no-SKETCHFAB_TOKEN
+- creature/chilu — no-SKETCHFAB_TOKEN
+- part/gui-sprig — no-SKETCHFAB_TOKEN
+- part/gui-flower — no-SKETCHFAB_TOKEN
+- part/migu-sprig — no-SKETCHFAB_TOKEN
+- part/migu-catkin — no-SKETCHFAB_TOKEN
+- part/yanmu-sprig — no-SKETCHFAB_TOKEN
+- part/yanmu-fruit-kaki — no-SKETCHFAB_TOKEN
+- part/head/tiger — Mixer keeps assemble() until wholes are sliced to part/head|body|tail.

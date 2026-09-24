@@ -1,0 +1,30 @@
+import { MeshLambertMaterial } from "three";
+import { C } from "../../style/palette";
+import { flatMat } from "../../style/facets";
+
+export const macaque = flatMat(C.furMacaque);
+export const macaquePale = flatMat("#d8c4a8");
+export const macaquePink = flatMat(C.furPink);
+export const whiteFur = flatMat(C.furWhite);
+export const horse = flatMat(C.furHorse);
+export const tiger = flatMat(C.furTiger);
+export const horseWhite = flatMat(C.furWhite);
+export const redTail = flatMat("#9c2b1a");
+export const fox = flatMat(C.furFox);
+export const foxTailTip = flatMat("#f4ead8");
+export const civet = flatMat(C.furCivet);
+export const sheep = flatMat(C.furSheep);
+export const dove = flatMat("#7a6a58");
+export const scale = flatMat(C.scale);
+export const shell = flatMat(C.shell);
+export const cow = flatMat(C.furCow);
+export const carp = flatMat(C.carp);
+export const skin = flatMat(C.skin);
+export const beak = flatMat(C.beak);
+export const horn = flatMat(C.horn);
+export const wing = flatMat(C.wing);
+export const eyeDark = flatMat(C.eye);
+export const eyeLight = flatMat(C.eyeWhite);
+export const cowSpot = flatMat(C.furCowSpot);
+
+export type PeltMat = MeshLambertMaterial;

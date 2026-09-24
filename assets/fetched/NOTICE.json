@@ -1,0 +1,311 @@
+{
+  "generatedAt": "2026-09-20T07:12:28.694Z",
+  "records": [
+    {
+      "id": "tex/cassia-leaf",
+      "kind": "atlas",
+      "path": "tex/cassia-leaf.jpg",
+      "license": "CC BY-SA 3.0",
+      "author": "Honmingjun",
+      "pageUrl": "https://commons.wikimedia.org/wiki/File:Cinnamomum_cassia_Leaf.jpg",
+      "analogue": "Cinnamomum cassia · 桂",
+      "source": "wikimedia",
+      "use": "atlas",
+      "yaw": 0
+    },
+    {
+      "id": "tex/cassia-bark",
+      "kind": "pbr",
+      "path": "tex/cassia-bark-diff.jpg",
+      "maps": {
+        "map": "tex/cassia-bark-diff.jpg",
+        "normalMap": "tex/cassia-bark-nor.jpg",
+        "roughnessMap": "tex/cassia-bark-rough.jpg"
+      },
+      "files": [
+        "tex/cassia-bark-diff.jpg",
+        "tex/cassia-bark-nor.jpg",
+        "tex/cassia-bark-rough.jpg"
+      ],
+      "license": "CC0",
+      "author": "Charlotte Baglioni",
+      "pageUrl": "https://polyhaven.com/a/japanese_camphor_bark",
+      "analogue": "Cinnamomum camphora bark (same genus as 桂) · PBR, never a generic oak stand-in",
+      "source": "polyhaven",
+      "asset": "japanese_camphor_bark",
+      "use": "atlas",
+      "yaw": 0
+    },
+    {
+      "id": "tex/mulberry-leaf",
+      "kind": "atlas",
+      "path": "tex/mulberry-leaf.jpg",
+      "license": "CC0",
+      "author": "Homoarborea",
+      "pageUrl": "https://commons.wikimedia.org/wiki/File:Broussonetia_papyrifera_(2).jpg",
+      "analogue": "Broussonetia papyrifera · 迷穀",
+      "source": "wikimedia",
+      "use": "atlas",
+      "yaw": 0
+    },
+    {
+      "id": "tex/mulberry-bark",
+      "kind": "pbr",
+      "path": "tex/mulberry-bark-diff.jpg",
+      "maps": {
+        "map": "tex/mulberry-bark-diff.jpg",
+        "normalMap": "tex/mulberry-bark-nor.jpg",
+        "roughnessMap": "tex/mulberry-bark-rough.jpg"
+      },
+      "files": [
+        "tex/mulberry-bark-diff.jpg",
+        "tex/mulberry-bark-nor.jpg",
+        "tex/mulberry-bark-rough.jpg"
+      ],
+      "license": "CC0",
+      "author": "Charlotte Baglioni",
+      "pageUrl": "https://polyhaven.com/a/chinese_hackberry_bark",
+      "analogue": "Papery furrowed bark for 構樹 / 迷穀 black grain",
+      "source": "polyhaven",
+      "asset": "chinese_hackberry_bark",
+      "use": "atlas",
+      "yaw": 0
+    },
+    {
+      "id": "tex/dateplum-leaf",
+      "kind": "atlas",
+      "path": "tex/dateplum-leaf.jpg",
+      "license": "CC BY 4.0",
+      "author": "Tournasol7",
+      "pageUrl": "https://commons.wikimedia.org/wiki/File:Diospyros_lotus_in_Ljubljana_BG_(3).jpg",
+      "analogue": "Diospyros lotus · 棪",
+      "source": "wikimedia",
+      "use": "atlas",
+      "yaw": 0
+    },
+    {
+      "id": "tex/dateplum-fruit",
+      "kind": "atlas",
+      "path": "tex/dateplum-fruit.jpg",
+      "license": "CC BY 4.0",
+      "author": "Tournasol7",
+      "pageUrl": "https://commons.wikimedia.org/wiki/File:Diospyros_lotus_in_Ljubljana_BG_(2).jpg",
+      "analogue": "Diospyros lotus fruit · 其子似柰而赤",
+      "source": "wikimedia",
+      "use": "atlas",
+      "yaw": 0
+    },
+    {
+      "id": "tex/dateplum-bark",
+      "kind": "pbr",
+      "path": "tex/dateplum-bark-diff.jpg",
+      "maps": {
+        "map": "tex/dateplum-bark-diff.jpg",
+        "normalMap": "tex/dateplum-bark-nor.jpg",
+        "roughnessMap": "tex/dateplum-bark-rough.jpg"
+      },
+      "files": [
+        "tex/dateplum-bark-diff.jpg",
+        "tex/dateplum-bark-nor.jpg",
+        "tex/dateplum-bark-rough.jpg"
+      ],
+      "license": "CC0",
+      "author": "Charlotte Baglioni",
+      "pageUrl": "https://polyhaven.com/a/japanese_zelkova_bark",
+      "analogue": "Dark flaky hardwood bark for 君遷子",
+      "source": "polyhaven",
+      "asset": "japanese_zelkova_bark",
+      "use": "atlas",
+      "yaw": 0
+    },
+    {
+      "id": "tex/mondo-leaf",
+      "kind": "atlas",
+      "path": "tex/mondo-leaf.jpg",
+      "license": "CC0",
+      "author": "Shabicht",
+      "pageUrl": "https://commons.wikimedia.org/wiki/File:Japonska_ka%C4%8Dja_brada.jpg",
+      "analogue": "Ophiopogon japonicus · 祝餘 其狀如韭",
+      "source": "wikimedia",
+      "use": "atlas",
+      "yaw": 0
+    },
+    {
+      "id": "tex/lacquer-bark",
+      "kind": "pbr",
+      "path": "tex/lacquer-bark-diff.jpg",
+      "maps": {
+        "map": "tex/lacquer-bark-diff.jpg",
+        "normalMap": "tex/lacquer-bark-nor.jpg",
+        "roughnessMap": "tex/lacquer-bark-rough.jpg"
+      },
+      "files": [
+        "tex/lacquer-bark-diff.jpg",
+        "tex/lacquer-bark-nor.jpg",
+        "tex/lacquer-bark-rough.jpg"
+      ],
+      "license": "CC0",
+      "author": "Charlotte Baglioni",
+      "pageUrl": "https://polyhaven.com/a/chinese_cedar_bark",
+      "analogue": "Red-brown fissured bark for 白䓘 赤理",
+      "source": "polyhaven",
+      "asset": "chinese_cedar_bark",
+      "use": "atlas",
+      "yaw": 0
+    },
+    {
+      "id": "part/yanmu-fruit",
+      "kind": "gltf",
+      "path": "part/yanmu-fruit/food_apple_01_2k.gltf",
+      "files": [
+        "part/yanmu-fruit/food_apple_01_2k.gltf",
+        "part/yanmu-fruit/textures/food_apple_01_nor_gl_2k.jpg",
+        "part/yanmu-fruit/textures/food_apple_01_diff_2k.jpg",
+        "part/yanmu-fruit/textures/food_apple_01_rough_2k.jpg",
+        "part/yanmu-fruit/food_apple_01.bin"
+      ],
+      "license": "CC0",
+      "author": "Oliver Harries",
+      "pageUrl": "https://polyhaven.com/a/food_apple_01",
+      "analogue": "Malus apple with calyx · 棪 其子似柰而赤 (classroom CC0 analogue; tint toward date-plum)",
+      "source": "polyhaven",
+      "asset": "food_apple_01",
+      "use": "part-glb",
+      "yaw": 0
+    },
+    {
+      "id": "part/zhuyu-tuft",
+      "kind": "gltf",
+      "path": "part/zhuyu-tuft/grass_medium_02_1k.gltf",
+      "files": [
+        "part/zhuyu-tuft/grass_medium_02_1k.gltf",
+        "part/zhuyu-tuft/textures/grass_medium_02_nor_gl_1k.jpg",
+        "part/zhuyu-tuft/textures/grass_medium_02_diff_1k.jpg",
+        "part/zhuyu-tuft/textures/grass_medium_02_arm_1k.jpg",
+        "part/zhuyu-tuft/grass_medium_02.bin"
+      ],
+      "license": "CC0",
+      "author": "Rico Cilliers",
+      "pageUrl": "https://polyhaven.com/a/grass_medium_02",
+      "analogue": "Scanned grassy tuft as the whole 祝餘 plant (Ophiopogon analogue; no mondo clump on Poly Haven)",
+      "source": "polyhaven",
+      "asset": "grass_medium_02",
+      "use": "part-glb",
+      "yaw": 0
+    },
+    {
+      "id": "scatter/fern",
+      "kind": "gltf",
+      "path": "scatter/fern/fern_02_1k.gltf",
+      "files": [
+        "scatter/fern/fern_02_1k.gltf",
+        "scatter/fern/textures/fern_02_arm_1k.jpg",
+        "scatter/fern/textures/fern_02_diff_1k.jpg",
+        "scatter/fern/textures/fern_02_nor_gl_1k.jpg",
+        "scatter/fern/fern_02.bin"
+      ],
+      "license": "CC0",
+      "author": "Rob Tuytel, Rico Cilliers",
+      "pageUrl": "https://polyhaven.com/a/fern_02",
+      "analogue": "scatter undergrowth only — never 桂",
+      "source": "polyhaven",
+      "asset": "fern_02",
+      "use": "scatter",
+      "yaw": 0
+    }
+  ],
+  "skipped": [
+    {
+      "id": "plant/gui",
+      "reason": "No downloadable cassia/cinnamon tree GLB matched the species. Runtime uses ez-tree wood + photo atlas."
+    },
+    {
+      "id": "plant/migu",
+      "reason": "No species-matched hero GLB. Atlas + ez-tree."
+    },
+    {
+      "id": "plant/yanmu",
+      "reason": "No species-matched hero GLB. Atlas + ez-tree."
+    },
+    {
+      "id": "plant/zhuyu",
+      "reason": "No species-matched hero GLB. Photo blades on the tuft path."
+    },
+    {
+      "id": "plant/baigao",
+      "reason": "Workshop-only. Atlas + ez-tree."
+    },
+    {
+      "id": "creature/shengsheng",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "creature/baiyuan",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "creature/guaishen",
+      "reason": "Named mashup stays on assemble() until phase-2 part slices exist."
+    },
+    {
+      "id": "creature/lushu",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "creature/xuangui",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "creature/lu",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "creature/lei",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "creature/bochi",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "creature/jiweihu",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "creature/guanguan",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "creature/chilu",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "part/gui-sprig",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "part/gui-flower",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "part/migu-sprig",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "part/migu-catkin",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "part/yanmu-sprig",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "part/yanmu-fruit-kaki",
+      "reason": "no-SKETCHFAB_TOKEN"
+    },
+    {
+      "id": "part/head/tiger",
+      "reason": "Mixer keeps assemble() until wholes are sliced to part/head|body|tail."
+    }
+  ]
+}
