@@ -59,7 +59,7 @@ function makeGltfLoader(manager?: LoadingManager): GLTFLoader {
   }
   if (!loaders.draco) {
     const draco = new DRACOLoader();
-    draco.setDecoderPath("/draco/");
+    draco.setDecoderPath(`${import.meta.env.BASE_URL}draco/`);
     loaders.draco = draco;
   }
   const gltf = new GLTFLoader(manager);
