@@ -13,6 +13,7 @@ import { surfaceAt, surfaceY } from "../nature/terrain";
 import { groundHeight } from "../nature/bvh";
 import { pickTerrainMesh } from "./patches";
 import { SEA_LEVEL } from "./nanshan";
+import { canClimbShanggang, noteStoryProximity } from "../story/types";
 
 const forward = new Vector3();
 const right = new Vector3();
@@ -48,6 +49,7 @@ export class Player {
   yaw: number;
   pitch: number;
   flying = false;
+  flySpeedIndex = 1;
   private readonly terrains: Mesh[];
   private readonly bounds: PlayerBounds;
   private lastX = Number.NaN;
@@ -116,6 +118,14 @@ export class Player {
     if (!this.flying) this.snapToGround();
   }
 
+  cycleFlySpeed(dir = 1): void {
+    this.flySpeedIndex = (this.flySpeedIndex + dir + 3) % 3;
+  }
+
+  flySpeedLabel(): string {
+    return ["慢", "中", "快"][this.flySpeedIndex] ?? "中";
+  }
+
   private meshAt(x: number, z: number): Mesh | undefined {
     return pickTerrainMesh(this.terrains, x, z) ?? this.terrains[0];
   }
@@ -156,7 +166,8 @@ export class Player {
     wish.y = 0;
     if (wish.lengthSq() > 1e-8) wish.normalize();
 
-    const speed = this.keys.has("shift") ? 14 : 7.2;
+    const walk = this.keys.has("shift") ? 14 : 7.2;
+    const speed = this.flying ? walk * [1, 3, 8][this.flySpeedIndex]! : walk;
     const prevX = this.rig.position.x;
     const prevZ = this.rig.position.z;
     const prevY = this.rig.position.y;
@@ -190,8 +201,25 @@ export class Player {
         this.lastX = x;
         this.lastZ = z;
         this.rig.position.y = gy;
+        if (Math.abs(x - 520) < 20 && gy > 50) {
+          this.rig.position.x = prevX + (x - 520 > 0 ? 0.4 : -0.4);
+          this.rig.position.y = Math.min(gy, prevY + 0.2);
+        }
+        if (
+          !canClimbShanggang() &&
+          x > -2900 &&
+          x < -2780 &&
+          z < -358 &&
+          z > -385
+        ) {
+          this.rig.position.x = prevX;
+          this.rig.position.z = prevZ;
+          this.rig.position.y = prevY;
+        }
+        noteStoryProximity(this.rig.position.x, this.rig.position.z);
       }
     }
+    noteStoryProximity(this.rig.position.x, this.rig.position.z);
 
     camTarget.copy(this.rig.position).add(camLift);
     const dist = this.bounds.camDist ?? 7.5;
@@ -205,8 +233,12 @@ export class Player {
       camDir.multiplyScalar(1 / span);
       camRay.set(camTarget, camDir);
       camRay.far = span;
-      const hits = camRay.intersectObjects(this.terrains, false);
-      const hit = hits[0];
+      const local = pickTerrainMesh(this.terrains, camTarget.x, camTarget.z);
+      let hit = local ? camRay.intersectObject(local, false)[0] : undefined;
+      if (!hit) {
+        const coarse = this.terrains.find((m) => ((m.userData.priority as number) ?? 1) === 0);
+        if (coarse && coarse !== local) hit = camRay.intersectObject(coarse, false)[0];
+      }
       if (hit && hit.distance < span - 0.25) {
         camPos.copy(hit.point).addScaledVector(camDir, -0.5);
       }

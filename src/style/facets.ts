@@ -158,8 +158,8 @@ export function addHexLimb(
   const dz = to.z - from.z;
   const len = Math.hypot(dx, dy, dz) || 0.04;
   const mesh = new Mesh(taperHex(r0, r1, len, 6), mat);
-  mesh.castShadow = true;
-  mesh.receiveShadow = true;
+  mesh.castShadow = false;
+  mesh.receiveShadow = false;
   aimFromTo(mesh, from, to);
   parent.add(mesh);
   return mesh;
@@ -185,8 +185,8 @@ export function aimFromTo(
 export function addFacet(parent: Object3D, geo: BufferGeometry, mat: MeshLambertMaterial, x = 0, y = 0, z = 0): Mesh {
   const mesh = new Mesh(geo, mat);
   mesh.position.set(x, y, z);
-  mesh.castShadow = true;
-  mesh.receiveShadow = true;
+  mesh.castShadow = false;
+  mesh.receiveShadow = false;
   parent.add(mesh);
   return mesh;
 }

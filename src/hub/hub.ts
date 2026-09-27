@@ -1,5 +1,6 @@
 import type { Quality } from "../quality";
 import { readQuality, writeQuality } from "../quality";
+import { readMute, toggleMute } from "../nature/audio";
 
 export function showHub(
   overlay: HTMLElement,
@@ -22,6 +23,8 @@ export function showHub(
       <p style="margin-top:2rem;opacity:.75">
         畫質
         <button class="ghost" id="q">${readQuality() === "high" ? "細緻" : "流暢"}</button>
+        ·
+        <button class="ghost" id="mute">${readMute() ? "靜音中" : "靜音"}</button>
         · WASD · 觸控搖桿
       </p>
     </section>
@@ -35,5 +38,9 @@ export function showHub(
     const next: Quality = readQuality() === "high" ? "low" : "high";
     writeQuality(next);
     (e.currentTarget as HTMLElement).textContent = next === "high" ? "細緻" : "流暢";
+  });
+  overlay.querySelector("#mute")!.addEventListener("click", (e) => {
+    const muted = toggleMute();
+    (e.currentTarget as HTMLElement).textContent = muted ? "靜音中" : "靜音";
   });
 }

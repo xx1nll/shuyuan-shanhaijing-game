@@ -1,5 +1,6 @@
 import {
   Group,
+  InstancedBufferAttribute,
   InstancedMesh,
   MeshLambertMaterial,
   Object3D,
@@ -129,8 +130,8 @@ function instanceWood(
 ): void {
   if (n <= 0) return;
   const mesh = new InstancedMesh(geo, mat, n);
-  mesh.castShadow = true;
-  mesh.receiveShadow = true;
+  mesh.castShadow = false;
+  mesh.receiveShadow = false;
   for (let i = 0; i < n; i += 1) {
     place(i, dummy);
     dummy.updateMatrix();
@@ -651,10 +652,57 @@ export function makeTree(kind: TreeKind, seed: number, quality?: Quality, overla
   return tagTree(built.root, kind, overlay);
 }
 
+export function makeFusang(): Group {
+  const bark = barkMigu();
+  const leaf = leafMigu();
+  const gold = flatMat(C.gold, { emissive: C.gold, emissiveIntensity: 0.28 });
+  const cinder = flatMat("#5a2e18", { emissive: "#9c2b1a", emissiveIntensity: 0.22 });
+  const root = flareTrunk(bark, 4.6, 1.45, 78, 1, 11);
+  const sockets: Socket[] = [];
+  for (let i = 0; i < 9; i += 1) {
+    const yaw = (i / 9) * Math.PI * 2 + 0.18;
+    const y = 20 + (i % 3) * 10;
+    const dir = dirFrom(yaw, 1.02 + (i % 3) * 0.06);
+    addLimb(root, bark, new Vector3(0, y, 0), dir, 24 + (i % 4) * 3.2, 1.15, 0.32, sockets, true);
+  }
+  for (let i = 0; i < 6; i += 1) {
+    const yaw = (i / 6) * Math.PI * 2 + 0.4;
+    addLimb(root, bark, new Vector3(0, 48, 0), dirFrom(yaw, 0.72), 16, 0.7, 0.22, sockets, 1);
+  }
+  addLimb(root, bark, new Vector3(0, 70, 0), new Vector3(0.08, 1, 0.04).normalize(), 18, 1.25, 0.38, sockets, true);
+  dressSockets(root, sockets, fanSang, leaf, { scale: 5.2, seed: 9, hang: 0.2 });
+  for (let i = 0; i < 9; i += 1) {
+    const sock = sockets[Math.min(i * 2, sockets.length - 1)]!;
+    addFacet(root, octahedron(2.35), cinder, sock.pos.x, sock.pos.y + 0.4, sock.pos.z);
+  }
+  addFacet(root, octahedron(3.6), gold, 0, 88, 0);
+  root.name = "扶桑";
+  return root;
+}
+
 export function placeTree(tree: Group, x: number, y: number, z: number, yaw = 0): Group {
   const clone = tree.clone(true);
+  const src: InstancedMesh[] = [];
+  tree.traverse((obj) => {
+    if (obj instanceof InstancedMesh) src.push(obj);
+  });
+  let i = 0;
+  clone.traverse((obj) => {
+    if (!(obj instanceof InstancedMesh)) return;
+    const from = src[i];
+    i += 1;
+    if (!from) return;
+    obj.instanceMatrix = from.instanceMatrix.clone() as InstancedBufferAttribute;
+    obj.instanceMatrix.needsUpdate = true;
+    obj.count = from.count;
+    if (from.instanceColor) {
+      obj.instanceColor = from.instanceColor.clone() as InstancedBufferAttribute;
+      if (obj.instanceColor) obj.instanceColor.needsUpdate = true;
+    }
+  });
   clone.position.set(x, y, z);
   clone.rotation.y = yaw;
+  clone.scale.setScalar(1.85);
   clone.updateMatrixWorld();
   return clone;
 }

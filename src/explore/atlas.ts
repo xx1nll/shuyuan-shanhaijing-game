@@ -1,4 +1,6 @@
+import { STUB_HILLS } from "./stubs";
 import { mountainById } from "./nanshan";
+import { SITE } from "./storyLand";
 
 export type AtlasRing = "center" | "zhong" | "shan" | "hai" | "hainei" | "haiwai" | "dahuang";
 export type CompassDir = "center" | "n" | "e" | "s" | "w";
@@ -77,11 +79,12 @@ const LOCI: AtlasLocus[] = [
     dir: "center",
     deg: 0,
     r: 0,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("hundun")!.padX,
+    worldZ: mountainById("hundun")!.padZ,
     quote: "天地渾沌如雞子。盤古生在其中。萬八千歲。天地開辟。",
     modern: "盤古開天地，化身為四極五嶽。",
     mythNote: "不出《山海經》。出《三五曆紀》《述異記》。置於地圖中央渾沌，不作經山。",
-    lockedHint: "開天闢地，尚無九州可履。",
     featured: true,
   },
 
@@ -248,10 +251,11 @@ const LOCI: AtlasLocus[] = [
     dir: "w",
     deg: 270,
     r: 0.29,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("kunlun-qiu")!.padX,
+    worldZ: mountainById("kunlun-qiu")!.padZ,
     quote: "西南四百里，曰崑崙之丘，是實惟帝之下都，神陸吾司之……有木焉……名曰沙棠，可以禦水，食之使人不溺。",
     modern: "陸吾守帝之下都。沙棠在此，與海內、大荒崑崙同名異層。",
-    lockedHint: "尚未開通。",
     featured: true,
   },
   {
@@ -262,11 +266,12 @@ const LOCI: AtlasLocus[] = [
     dir: "w",
     deg: 270,
     r: 0.325,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("yushan")!.padX,
+    worldZ: mountainById("yushan")!.padZ,
     quote: "又西三百五十里，曰玉山，是西王母所居也。西王母其狀如人，豹尾虎齒而善嘯，蓬髮戴勝。",
     modern: "西王母所居。羿請不死之藥於此。",
     mythNote: "嫦娥不出《山海經》（《淮南子》）。奔月事掛於西王母之玉山。",
-    lockedHint: "尚未開通。",
     featured: true,
   },
   {
@@ -291,10 +296,26 @@ const LOCI: AtlasLocus[] = [
     dir: "n",
     deg: 348,
     r: 0.3,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("fajiu")!.padX,
+    worldZ: mountainById("fajiu")!.padZ,
     quote: "又北二百里，曰發鳩之山，其上多柘木。有鳥焉……名曰精衛……常銜西山之木石，以堙於東海。",
-    modern: "炎帝少女女娃溺於東海，化為精衛。",
-    lockedHint: "尚未開通。",
+    modern: "北山經之山。精衛舊巢在此；填海履處在東海灘。",
+    featured: true,
+  },
+  {
+    id: "jingwei",
+    name: "精衛灘",
+    jing: "北山經 · 東海",
+    ring: "hai",
+    dir: "e",
+    deg: 112,
+    r: 0.42,
+    walkable: true,
+    worldX: mountainById("jingwei")!.padX,
+    worldZ: mountainById("jingwei")!.padZ,
+    quote: "常銜西山之木石，以堙於東海。",
+    modern: "鷄山黑水入海之南灣。發鳩在北。",
     featured: true,
   },
   {
@@ -411,11 +432,12 @@ const LOCI: AtlasLocus[] = [
     dir: "w",
     deg: 258,
     r: 0.54,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("kunlun-xu")!.padX,
+    worldZ: mountainById("kunlun-xu")!.padZ,
     quote: "海內崑崙之墟，在西北，帝之下都……門有開明獸守之……非仁羿莫能上岡之巖。",
     modern: "海內層崑崙。仁羿能上岡，非后羿專山。",
     mythNote: "《山海經》無后羿之山。羿見於此墟「非仁羿莫能上岡之巖」，賜弓在海內經（本教材未收）。",
-    lockedHint: "尚未開通。",
     featured: true,
   },
   {
@@ -426,10 +448,11 @@ const LOCI: AtlasLocus[] = [
     dir: "w",
     deg: 248,
     r: 0.54,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("kunlun-xu")!.padX + 8,
+    worldZ: mountainById("kunlun-xu")!.padZ,
     quote: "開明獸身大類虎而九首，皆人面，東嚮立崑崙上。",
     modern: "九首人面，守崑崙南。",
-    lockedHint: "尚未開通。",
   },
   {
     id: "kaiming-bei",
@@ -544,10 +567,11 @@ const LOCI: AtlasLocus[] = [
     dir: "w",
     deg: 248,
     r: 0.69,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("changyang")!.padX,
+    worldZ: mountainById("changyang")!.padZ,
     quote: "刑天與帝爭神，帝斷其首，葬之常羊之山，乃以乳為目，以臍為口，操干戚以舞。",
     modern: "首葬常羊之山。",
-    lockedHint: "尚未開通。",
     featured: true,
   },
   {
@@ -584,10 +608,11 @@ const LOCI: AtlasLocus[] = [
     dir: "n",
     deg: 0,
     r: 0.69,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("kuafu")!.padX,
+    worldZ: mountainById("kuafu")!.padZ,
     quote: "夸父與日逐走，入日。渴欲得飲，飲於河、渭……未至，道渴而死。棄其杖，化為鄧林。",
     modern: "逐日渴死。大荒北經成都載天亦記夸父。",
-    lockedHint: "尚未開通。",
     featured: true,
   },
   {
@@ -611,10 +636,11 @@ const LOCI: AtlasLocus[] = [
     dir: "s",
     deg: 180,
     r: 0.69,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("zhurong")!.padX,
+    worldZ: mountainById("zhurong")!.padZ,
     quote: "南方祝融，獸身人面，乘兩龍。",
-    modern: "南方火神。",
-    lockedHint: "尚未開通。",
+    modern: "南方火神。立於丹穴南海岬。",
     featured: true,
   },
   {
@@ -677,10 +703,11 @@ const LOCI: AtlasLocus[] = [
     dir: "e",
     deg: 72,
     r: 0.69,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("heichi")!.padX,
+    worldZ: mountainById("heichi")!.padZ,
     quote: "黑齒國在其北，為人黑齒，食稻啖蛇，一赤一青，在其旁。",
     modern: "扶桑之南鄰。",
-    lockedHint: "尚未開通。",
   },
   {
     id: "fusang",
@@ -690,11 +717,12 @@ const LOCI: AtlasLocus[] = [
     dir: "e",
     deg: 90,
     r: 0.69,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("tanggu")!.padX,
+    worldZ: mountainById("tanggu")!.padZ,
     quote: "湯谷上有扶桑，十日所浴，在黑齒北。居水中，有大木，九日居下枝，一日居上枝。",
     modern: "十日所浴。后羿射日之事掛於此。",
     mythNote: "《山海經》無后羿之山。射日出《淮南子》。十日在湯谷扶桑；羿上岡見海內西經崑崙之墟。",
-    lockedHint: "尚未開通。",
     featured: true,
   },
   {
@@ -719,11 +747,12 @@ const LOCI: AtlasLocus[] = [
     dir: "w",
     deg: 312,
     r: 0.855,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("buzhou")!.padX,
+    worldZ: mountainById("buzhou")!.padZ,
     quote: "西北海之外，大荒之隅，有山而不合，名曰不周。",
     modern: "共工怒觸之處。女媧補天之事掛於此柱。",
     mythNote: "女媧補天不出《山海經》（《淮南子》）。經中女媧之腸在大荒西栗廣之野，本教材未收，故與共工同置不周。",
-    lockedHint: "尚未開通。",
     featured: true,
   },
   {
@@ -747,10 +776,11 @@ const LOCI: AtlasLocus[] = [
     dir: "w",
     deg: 258,
     r: 0.855,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("yushan")!.padX,
+    worldZ: mountainById("yushan")!.padZ,
     quote: "西海之南，流沙之濱……有大山，名曰崑崙之丘……有人，戴勝，虎齒，有豹尾，穴處，名曰西王母。",
     modern: "大荒層崑崙。西王母穴處。此山萬物盡有。",
-    lockedHint: "尚未開通。",
     featured: true,
   },
   {
@@ -815,10 +845,11 @@ const LOCI: AtlasLocus[] = [
     dir: "n",
     deg: 0,
     r: 0.855,
-    walkable: false,
+    walkable: true,
+    worldX: SITE.gongTai.x,
+    worldZ: SITE.gongTai.z,
     quote: "有係昆之山者，有共工之臺，射者不敢北嚮。",
     modern: "黃帝女魃、蚩尤之戰亦記於此篇。",
-    lockedHint: "尚未開通。",
     featured: true,
   },
   {
@@ -842,10 +873,11 @@ const LOCI: AtlasLocus[] = [
     dir: "s",
     deg: 155,
     r: 0.855,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("ganyuan")!.padX,
+    worldZ: mountainById("ganyuan")!.padZ,
     quote: "東南海之外，甘水之間，有羲和之國。有女子名曰羲和，方浴日於甘淵。羲和者，帝俊之妻，是生十日。",
     modern: "生十日，浴日於甘淵。與扶桑十日相應。",
-    lockedHint: "尚未開通。",
     featured: true,
   },
   {
@@ -869,10 +901,11 @@ const LOCI: AtlasLocus[] = [
     dir: "e",
     deg: 78,
     r: 0.855,
-    walkable: false,
+    walkable: true,
+    worldX: mountainById("liubo")!.padX,
+    worldZ: mountainById("liubo")!.padZ,
     quote: "東海中有流波山，入海七千里。其上有獸……其名曰夔。黃帝得之，以其皮為鼓。",
     modern: "一足蒼身，出沒則風雨。",
-    lockedHint: "尚未開通。",
     featured: true,
   },
   {
@@ -890,25 +923,27 @@ const LOCI: AtlasLocus[] = [
   },
 ];
 
-export const ATLAS: PlacedLocus[] = LOCI.map((locus) => {
+function openStubs(list: AtlasLocus[]): AtlasLocus[] {
+  return list.map((locus) => {
+    const stub = STUB_HILLS.find((s) => s.id === locus.id);
+    if (!stub) return locus;
+    return {
+      ...locus,
+      walkable: true,
+      worldX: stub.x,
+      worldZ: stub.z,
+      lockedHint: undefined,
+      modern: locus.modern,
+    };
+  });
+}
+
+export const ATLAS: PlacedLocus[] = openStubs(LOCI).map((locus) => {
   const { mx, my } = polarToMap(locus.r, locus.deg);
   return { ...locus, mx, my };
 });
 
 export const WALKABLE = ATLAS.filter((l) => l.walkable);
-
-const ZHAOYAO = ATLAS.find((l) => l.id === "zhaoyao")!;
-const JISHAN = ATLAS.find((l) => l.id === "ji-nanshan")!;
-
-/** Project the 南山 region onto the south 山經 arc (招搖 west → 鷄山 east). */
-export function nanshanToAtlas(x: number, z: number): { mx: number; my: number } {
-  const x0 = ZHAOYAO.worldX ?? 0;
-  const x1 = JISHAN.worldX ?? 1;
-  const t = Math.min(1, Math.max(0, (x - x0) / (x1 - x0 || 1)));
-  const deg = ZHAOYAO.deg + t * (JISHAN.deg - ZHAOYAO.deg);
-  const r = RING_RADIUS.shan + (z / 280) * 0.03;
-  return polarToMap(r, deg);
-}
 
 export function locusById(id: string): PlacedLocus | undefined {
   return ATLAS.find((l) => l.id === id);

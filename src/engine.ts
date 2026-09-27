@@ -2,7 +2,6 @@ import {
   ACESFilmicToneMapping,
   Clock,
   Color,
-  PCFSoftShadowMap,
   PerspectiveCamera,
   Scene,
   SRGBColorSpace,
@@ -33,8 +32,7 @@ export class Engine {
     this.renderer.outputColorSpace = SRGBColorSpace;
     this.renderer.toneMapping = ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1.15;
-    this.renderer.shadowMap.enabled = quality === "high";
-    this.renderer.shadowMap.type = PCFSoftShadowMap;
+    this.renderer.shadowMap.enabled = false;
 
     this.scene = new Scene();
     this.scene.background = new Color(C.sky);

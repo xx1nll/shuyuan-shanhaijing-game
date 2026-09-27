@@ -1,9 +1,10 @@
 import { BufferAttribute, BufferGeometry, Color, Mesh, MeshLambertMaterial } from "three";
 import { C } from "../style/palette";
 import { SEA_LEVEL, type Biome } from "../explore/nanshan";
+import { riverBedAt } from "../explore/rivers";
 
 export type HeightSampler = (x: number, z: number) => number;
-export type BiomeSampler = (x: number, z: number) => Biome | "island";
+export type BiomeSampler = (x: number, z: number, y?: number) => Biome | "island";
 
 const TMP = new Color();
 const SAND = new Color(C.sand);
@@ -19,9 +20,26 @@ function hash01(x: number, z: number): number {
   return s - Math.floor(s);
 }
 
-function colorAt(x: number, y: number, z: number, biomeAt?: BiomeSampler): Color {
+/** Same vertex jitter the height mesh bakes, so props sit on the surface the camera sees. */
+export function bakedHeight(sample: HeightSampler, x: number, z: number, jitter = 0.18): number {
+  return sample(x, z) + (hash01(x * 0.37, z * 0.41) - 0.5) * jitter;
+}
+
+export function terrainColorAt(x: number, y: number, z: number, biomeAt?: BiomeSampler): Color {
+  const bed = riverBedAt(x, z);
+  if (bed) {
+    if (bed.id === "kunlun-hei") TMP.set("#0a0a0c");
+    else if (bed.id === "ji-hei") TMP.set("#1a1410");
+    else if (bed.id === "kunlun-chi" || bed.id === "fengyuan") TMP.set("#7a2418");
+    else if (bed.id === "dan" || bed.id === "dan-pool") TMP.set("#6a2018");
+    else if (bed.id === "ruo") TMP.set("#3a4a40");
+    else TMP.set(bed.color);
+    const n = (hash01(x, z) - 0.5) * 0.08;
+    TMP.offsetHSL(0, 0, n);
+    return TMP;
+  }
   if (biomeAt) {
-    const b = biomeAt(x, z);
+    const b = biomeAt(x, z, y);
     switch (b) {
       case "cassia":
         TMP.set(C.grass);
@@ -56,21 +74,20 @@ function colorAt(x: number, y: number, z: number, biomeAt?: BiomeSampler): Color
         if (y < 28) TMP.lerp(LACQUER, 0.28);
         if (y > 48) TMP.lerp(GOLD, 0.35);
         break;
-      case "shade":
-        TMP.set(C.jade);
-        TMP.lerp(SHADE, 0.55);
-        break;
       case "gorge":
-        TMP.set(GORGE);
-        TMP.lerp(LACQUER, 0.35);
+        TMP.set("#1a1410");
+        break;
+      case "quarry":
+        TMP.set("#6a2018");
+        TMP.lerp(LACQUER, 0.25);
+        break;
+      case "shade":
+        TMP.set("#3a4a40");
+        TMP.lerp(SHADE, 0.35);
         break;
       case "scree":
         TMP.set(PALE);
         TMP.lerp(SAND, 0.2);
-        break;
-      case "quarry":
-        TMP.set(LACQUER);
-        TMP.lerp(RIDGE, 0.4);
         break;
       case "crown":
         TMP.set(GOLD);
@@ -137,7 +154,7 @@ function fillHeights(
       verts[i * 3] = x;
       verts[i * 3 + 1] = y;
       verts[i * 3 + 2] = z;
-      const c = colorAt(x, y, z, biomeAt);
+      const c = terrainColorAt(x, y, z, biomeAt);
       colors[i * 3] = c.r;
       colors[i * 3 + 1] = c.g;
       colors[i * 3 + 2] = c.b;
@@ -157,6 +174,7 @@ export function buildHeightMesh(opts: {
   receiveShadow?: boolean;
   biomeAt?: BiomeSampler;
   jitter?: number;
+  polygonOffset?: number;
 }): Mesh {
   const { minX, maxX, minZ, maxZ, segX, segZ, sample } = opts;
   const jitter = opts.jitter ?? 0.12;
@@ -185,11 +203,14 @@ export function buildHeightMesh(opts: {
     color: 0xffffff,
     vertexColors: true,
     flatShading: true,
+    polygonOffset: true,
+    polygonOffsetFactor: opts.polygonOffset ?? 0,
+    polygonOffsetUnits: opts.polygonOffset ?? 0,
   });
   const mesh = new Mesh(geo, mat);
   mesh.receiveShadow = opts.receiveShadow ?? true;
   mesh.castShadow = false;
-  mesh.frustumCulled = false;
+  mesh.frustumCulled = true;
   mesh.name = "terrain";
   mesh.userData.jitter = jitter;
   mesh.userData.biomeAt = opts.biomeAt;

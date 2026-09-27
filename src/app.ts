@@ -2,7 +2,7 @@ import { Engine } from "./engine";
 import { showHub } from "./hub/hub";
 import { startExplore } from "./explore/mode";
 import { startWorkshop } from "./workshop/mode";
-import { NatureAudio } from "./nature/audio";
+import { NatureAudio, applyMute, bindAudio } from "./nature/audio";
 import { readQuality } from "./quality";
 import { emptyStory } from "./story/types";
 
@@ -15,6 +15,7 @@ export function boot(): void {
   app.append(canvas, overlay);
 
   const audio = new NatureAudio();
+  bindAudio(audio);
   emptyStory();
 
   let engine: Engine | null = null;
@@ -27,14 +28,28 @@ export function boot(): void {
     engine = null;
     showHub(overlay, async (mode) => {
       audio.start();
+      applyMute();
       const quality = readQuality();
-      engine = new Engine(canvas, quality);
-      engine.start();
       if (mode === "explore") {
-        disposeMode = await startExplore(engine, overlay, quality, goHub);
+        await runExplore("zhaoyao");
       } else {
+        engine = new Engine(canvas, quality);
+        engine.start();
         disposeMode = await startWorkshop(engine, overlay, quality, goHub);
       }
+    });
+  };
+
+  const runExplore = async (mountainId: string) => {
+    disposeMode?.();
+    disposeMode = null;
+    engine?.dispose();
+    const quality = readQuality();
+    engine = new Engine(canvas, quality);
+    engine.start();
+    disposeMode = await startExplore(engine, overlay, quality, goHub, {
+      mountainId,
+      onSwitchMountain: (_id) => undefined,
     });
   };
 

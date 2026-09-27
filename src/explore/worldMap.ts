@@ -1,18 +1,10 @@
-import {
-  ATLAS,
-  JING_LABELS,
-  RING_LABELS,
-  RING_RADIUS,
-  SEA_LABELS,
-  nanshanToAtlas,
-  nearestLocus,
-  polarToMap,
-  type PlacedLocus,
-} from "./atlas";
+import { type PlacedLocus } from "./atlas";
+import { MAP_MARKERS, NANSHAN_MAP } from "./mapBake";
 
 export function mountWorldMap(
   root: HTMLElement,
   onTeleport: (locus: PlacedLocus) => void,
+  chart: HTMLCanvasElement,
 ): {
   open: () => void;
   close: () => void;
@@ -26,14 +18,14 @@ export function mountWorldMap(
       <header class="world-map-head">
         <div>
           <h2>山海圖</h2>
-          <p class="world-map-note">山內於海，海內於海外，海外於大荒。點針閱經文。</p>
+          <p class="world-map-note">北上。點地標閱經文，可傳至山足。滾輪縮放，拖曳平移。</p>
         </div>
         <button class="ghost" type="button" id="world-map-close">關閉</button>
       </header>
       <div class="world-map-body">
-        <canvas width="900" height="900"></canvas>
+        <canvas width="1100" height="640"></canvas>
         <aside class="world-map-panel">
-          <p class="world-map-empty">點選地圖上的針標。</p>
+          <p class="world-map-empty">點選地圖上的地標。</p>
         </aside>
       </div>
     </article>
@@ -44,15 +36,61 @@ export function mountWorldMap(
   const panel = modal.querySelector(".world-map-panel") as HTMLElement;
   const closeBtn = modal.querySelector("#world-map-close") as HTMLButtonElement;
 
+  const spanX = NANSHAN_MAP.maxX - NANSHAN_MAP.minX;
+  const spanZ = NANSHAN_MAP.maxZ - NANSHAN_MAP.minZ;
+  const walkable: PlacedLocus[] = MAP_MARKERS.map((pin) => ({
+    id: pin.mountainId,
+    name: pin.name,
+    jing: pin.quote,
+    ring: "shan",
+    dir: "s",
+    deg: 0,
+    r: 0,
+    walkable: true,
+    worldX: pin.x,
+    worldZ: pin.z,
+    quote: pin.quote,
+    modern: pin.modern ?? pin.name,
+    mx: 0,
+    my: 0,
+  }));
+
   let playerX = 0;
   let playerZ = 0;
   let playerYaw = 0;
   let selected: PlacedLocus | undefined;
   let hover: PlacedLocus | undefined;
+  let viewX = 0;
+  let viewZ = 0;
+  let viewW = 900;
+  let dragging = false;
+  let lastMx = 0;
+  let lastMy = 0;
+
+  const worldToCanvas = (x: number, z: number) => {
+    const px = ((x - viewX) / viewW) * canvas.width + canvas.width / 2;
+    const viewH = viewW * (canvas.height / canvas.width);
+    const py = ((z - viewZ) / viewH) * canvas.height + canvas.height / 2;
+    return { px, py };
+  };
+
+  const canvasToWorld = (sx: number, sy: number) => {
+    const viewH = viewW * (canvas.height / canvas.width);
+    const x = viewX + ((sx - canvas.width / 2) / canvas.width) * viewW;
+    const z = viewZ + ((sy - canvas.height / 2) / canvas.height) * viewH;
+    return { x, z };
+  };
+
+  const frameOn = (x: number, z: number) => {
+    viewX = x;
+    viewZ = z;
+    viewW = 2400;
+  };
 
   const close = () => modal.classList.add("hidden");
   const open = () => {
     modal.classList.remove("hidden");
+    frameOn(playerX, playerZ);
     paint();
     renderPanel();
   };
@@ -63,14 +101,48 @@ export function mountWorldMap(
   });
 
   const pick = (ev: MouseEvent): PlacedLocus | undefined => {
-    const { mx, my } = eventToMap(canvas, ev);
-    return nearestLocus(mx, my, 0.07);
+    const rect = canvas.getBoundingClientRect();
+    const sx = ((ev.clientX - rect.left) / rect.width) * canvas.width;
+    const sy = ((ev.clientY - rect.top) / rect.height) * canvas.height;
+    const { x, z } = canvasToWorld(sx, sy);
+    let best: PlacedLocus | undefined;
+    let bestD = viewW * 0.035;
+    for (const loc of walkable) {
+      const d = Math.hypot((loc.worldX ?? 0) - x, (loc.worldZ ?? 0) - z);
+      if (d < bestD) {
+        bestD = d;
+        best = loc;
+      }
+    }
+    return best;
   };
 
   canvas.addEventListener("mousemove", (ev) => {
+    if (dragging) {
+      const rect = canvas.getBoundingClientRect();
+      const sx = ((ev.clientX - rect.left) / rect.width) * canvas.width;
+      const sy = ((ev.clientY - rect.top) / rect.height) * canvas.height;
+      const a = canvasToWorld(lastMx, lastMy);
+      const b = canvasToWorld(sx, sy);
+      viewX -= b.x - a.x;
+      viewZ -= b.z - a.z;
+      lastMx = sx;
+      lastMy = sy;
+      paint();
+      return;
+    }
     hover = pick(ev);
-    canvas.style.cursor = hover ? "pointer" : "default";
+    canvas.style.cursor = hover ? "pointer" : "grab";
     paint();
+  });
+  canvas.addEventListener("mousedown", (ev) => {
+    const rect = canvas.getBoundingClientRect();
+    lastMx = ((ev.clientX - rect.left) / rect.width) * canvas.width;
+    lastMy = ((ev.clientY - rect.top) / rect.height) * canvas.height;
+    dragging = true;
+  });
+  window.addEventListener("mouseup", () => {
+    dragging = false;
   });
   canvas.addEventListener("mouseleave", () => {
     hover = undefined;
@@ -83,11 +155,21 @@ export function mountWorldMap(
     renderPanel();
     paint();
   });
+  canvas.addEventListener(
+    "wheel",
+    (ev) => {
+      ev.preventDefault();
+      const factor = ev.deltaY > 0 ? 1.12 : 0.89;
+      viewW = Math.min(spanX * 1.15, Math.max(220, viewW * factor));
+      paint();
+    },
+    { passive: false },
+  );
 
   const renderPanel = () => {
     const loc = selected;
     if (!loc) {
-      panel.innerHTML = `<p class="world-map-empty">點選地圖上的針標。</p>`;
+      panel.innerHTML = `<p class="world-map-empty">點選地圖上的地標。</p>`;
       return;
     }
     const travel = loc.walkable
@@ -111,116 +193,46 @@ export function mountWorldMap(
   const paint = () => {
     const w = canvas.width;
     const h = canvas.height;
-    const cx = w / 2;
-    const cy = h / 2;
-    const scale = Math.min(w, h) * 0.46;
-
     ctx.fillStyle = "#cbb58a";
     ctx.fillRect(0, 0, w, h);
-    const paper = ctx.createRadialGradient(cx, cy, 40, cx, cy, scale * 1.35);
-    paper.addColorStop(0, "#e8d7b0");
-    paper.addColorStop(0.55, "#d4c094");
-    paper.addColorStop(1, "#b89a68");
-    ctx.fillStyle = paper;
-    ctx.fillRect(0, 0, w, h);
 
-    const toPx = (mx: number, my: number) => ({ px: cx + mx * scale, py: cy + my * scale });
+    const viewH = viewW * (h / w);
+    const srcX = ((viewX - viewW / 2 - NANSHAN_MAP.minX) / spanX) * chart.width;
+    const srcY = ((viewZ - viewH / 2 - NANSHAN_MAP.minZ) / spanZ) * chart.height;
+    const srcW = (viewW / spanX) * chart.width;
+    const srcH = (viewH / spanZ) * chart.height;
+    ctx.imageSmoothingEnabled = true;
+    ctx.drawImage(chart, srcX, srcY, srcW, srcH, 0, 0, w, h);
 
-    const fillRing = (r0: number, r1: number, fill: string) => {
-      ctx.beginPath();
-      ctx.arc(cx, cy, r1 * scale, 0, Math.PI * 2);
-      ctx.arc(cx, cy, r0 * scale, 0, Math.PI * 2, true);
-      ctx.fillStyle = fill;
-      ctx.fill();
-    };
-
-    ctx.beginPath();
-    ctx.arc(cx, cy, RING_RADIUS.shan * scale, 0, Math.PI * 2);
-    ctx.fillStyle = "#9aaa6e";
-    ctx.fill();
-
-    fillRing(RING_RADIUS.shan, RING_RADIUS.hai, "rgba(70, 130, 140, 0.45)");
-    fillRing(RING_RADIUS.hai, RING_RADIUS.hainei, "rgba(186, 168, 122, 0.55)");
-    fillRing(RING_RADIUS.hainei, RING_RADIUS.haiwai, "rgba(58, 92, 108, 0.38)");
-    fillRing(RING_RADIUS.haiwai, RING_RADIUS.dahuang + 0.06, "rgba(42, 36, 28, 0.42)");
-
-    ctx.beginPath();
-    ctx.arc(cx, cy, RING_RADIUS.zhong * scale, 0, Math.PI * 2);
-    ctx.fillStyle = "rgba(196, 163, 90, 0.28)";
-    ctx.fill();
-
-    ctx.strokeStyle = "rgba(60, 42, 22, 0.55)";
-    ctx.lineWidth = 1.4;
-    for (const ring of Object.values(RING_RADIUS)) {
-      if (ring <= 0) continue;
-      ctx.beginPath();
-      ctx.arc(cx, cy, ring * scale, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-
-    ctx.save();
-    ctx.beginPath();
-    ctx.arc(cx, cy, (RING_RADIUS.dahuang + 0.06) * scale, 0, Math.PI * 2);
-    ctx.arc(cx, cy, RING_RADIUS.hai * scale, 0, Math.PI * 2, true);
-    ctx.fillStyle = "rgba(28, 22, 16, 0.22)";
-    ctx.fill();
-    ctx.restore();
-
-    ctx.fillStyle = "rgba(72, 48, 22, 0.82)";
-    ctx.font = "13px 'Songti TC', 'Noto Serif TC', serif";
-    ctx.textAlign = "center";
-    ctx.textBaseline = "middle";
-    for (const sea of SEA_LABELS) {
-      const p = toPx(...pair(polarToMap(sea.r, sea.deg)));
-      ctx.fillText(sea.name, p.px, p.py);
-    }
-
-    ctx.fillStyle = "rgba(92, 48, 28, 0.78)";
-    ctx.font = "13px 'Songti TC', 'Noto Serif TC', serif";
-    for (const jing of JING_LABELS) {
-      const p = toPx(...pair(polarToMap(jing.r - 0.055, jing.deg)));
-      ctx.fillText(jing.name, p.px, p.py);
-    }
-
-    ctx.fillStyle = "rgba(50, 36, 20, 0.55)";
+    ctx.fillStyle = "rgba(92, 48, 28, 0.88)";
     ctx.font = "11px 'Songti TC', 'Noto Serif TC', serif";
-    for (const ring of RING_LABELS) {
-      if (ring.ring === "zhong" || ring.ring === "shan") continue;
-      const p = toPx(...pair(polarToMap(ring.r, 38)));
-      ctx.fillText(ring.name, p.px, p.py);
+    ctx.textAlign = "center";
+    ctx.textBaseline = "bottom";
+    const label = viewW < 3600;
+    for (const pin of MAP_MARKERS) {
+      const p = worldToCanvas(pin.x, pin.z);
+      if (p.px < 8 || p.py < 8 || p.px > w - 8 || p.py > h - 8) continue;
+      drawDiamond(ctx, p.px, p.py, label ? 4.5 : 3.2, "#c4a35a");
+      if (!label) continue;
+      ctx.fillStyle = "rgba(50, 36, 20, 0.82)";
+      ctx.fillText(pin.name, p.px, p.py - 7);
     }
 
     const focus = hover ?? selected;
-    for (const loc of ATLAS) {
-      const p = toPx(loc.mx, loc.my);
+    for (const loc of walkable) {
+      const p = worldToCanvas(loc.worldX ?? 0, loc.worldZ ?? 0);
+      if (p.px < 4 || p.py < 4 || p.px > w - 4 || p.py > h - 4) continue;
       const active = focus?.id === loc.id;
-      const gold = loc.walkable;
-      drawDiamond(
-        ctx,
-        p.px,
-        p.py,
-        active ? 8 : gold ? 6.5 : 5,
-        gold ? "#c4a35a" : "#7a5a32",
-      );
-      const showName = active || gold || loc.featured;
-      if (showName) {
-        const lab = toPx(...pair(polarToMap(loc.r + (loc.ring === "center" ? 0.06 : 0.042), loc.deg)));
-        ctx.fillStyle = gold ? "#5a3a14" : "rgba(40, 30, 18, 0.88)";
-        ctx.font = `${active || gold ? 12 : 10}px 'Songti TC', 'Noto Serif TC', serif`;
-        ctx.textAlign = "center";
-        ctx.textBaseline = "middle";
-        ctx.fillText(loc.name, lab.px, lab.py);
-      }
+      if (active) drawDiamond(ctx, p.px, p.py, 8, "#9c2b1a");
     }
 
-    const you = nanshanToAtlas(playerX, playerZ);
-    const pp = toPx(you.mx, you.my);
+    const you = worldToCanvas(playerX, playerZ);
     ctx.save();
-    ctx.translate(pp.px, pp.py);
+    ctx.translate(you.px, you.py);
     ctx.rotate(Math.PI - playerYaw);
     ctx.fillStyle = "#9c2b1a";
     ctx.beginPath();
-    ctx.moveTo(0, -9);
+    ctx.moveTo(0, -10);
     ctx.lineTo(6, 8);
     ctx.lineTo(0, 4);
     ctx.lineTo(-6, 8);
@@ -228,11 +240,10 @@ export function mountWorldMap(
     ctx.fill();
     ctx.restore();
 
-    ctx.fillStyle = "rgba(60, 42, 22, 0.55)";
-    ctx.font = "12px 'Songti TC', 'Noto Serif TC', serif";
-    ctx.textAlign = "center";
-    const n = toPx(...pair(polarToMap(0.97, 0)));
-    ctx.fillText("北", n.px, n.py);
+    ctx.fillStyle = "rgba(60, 42, 22, 0.7)";
+    ctx.font = "13px 'Songti TC', 'Noto Serif TC', serif";
+    ctx.textAlign = "left";
+    ctx.fillText("北", 16, 22);
   };
 
   paint();
@@ -248,20 +259,6 @@ export function mountWorldMap(
       if (!modal.classList.contains("hidden")) paint();
     },
   };
-}
-
-function pair(p: { mx: number; my: number }): [number, number] {
-  return [p.mx, p.my];
-}
-
-function eventToMap(canvas: HTMLCanvasElement, ev: MouseEvent): { mx: number; my: number } {
-  const rect = canvas.getBoundingClientRect();
-  const sx = ((ev.clientX - rect.left) / rect.width) * canvas.width;
-  const sy = ((ev.clientY - rect.top) / rect.height) * canvas.height;
-  const cx = canvas.width / 2;
-  const cy = canvas.height / 2;
-  const scale = Math.min(canvas.width, canvas.height) * 0.46;
-  return { mx: (sx - cx) / scale, my: (sy - cy) / scale };
 }
 
 function drawDiamond(ctx: CanvasRenderingContext2D, x: number, y: number, r: number, fill: string): void {

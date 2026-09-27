@@ -1,3 +1,31 @@
+const MUTE_KEY = "kunlun-mute";
+const LIVE = 0.12;
+
+export function readMute(): boolean {
+  return localStorage.getItem(MUTE_KEY) === "1";
+}
+
+export function writeMute(muted: boolean): void {
+  localStorage.setItem(MUTE_KEY, muted ? "1" : "0");
+}
+
+let bound: NatureAudio | null = null;
+
+export function bindAudio(audio: NatureAudio): void {
+  bound = audio;
+  applyMute();
+}
+
+export function toggleMute(): boolean {
+  writeMute(!readMute());
+  applyMute();
+  return readMute();
+}
+
+export function applyMute(): void {
+  bound?.setGain(readMute() ? 0 : LIVE);
+}
+
 export class NatureAudio {
   private ctx: AudioContext | null = null;
   private master: GainNode | null = null;
@@ -7,7 +35,7 @@ export class NatureAudio {
     const ctx = new AudioContext();
     this.ctx = ctx;
     this.master = ctx.createGain();
-    this.master.gain.value = 0.12;
+    this.master.gain.value = readMute() ? 0 : LIVE;
     this.master.connect(ctx.destination);
     this.noise(ctx, 180, 0.35, 0.7);
     this.noise(ctx, 80, 0.22, 0.45);

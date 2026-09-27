@@ -103,33 +103,105 @@ export const MOUNTAIN_COVER: MountainCover[] = [
   {
     mountainId: "zhaoyao",
     scatter: [
-      { kind: "gui", count: 22, radius: 28, xCenter: -22, zCenter: 20 },
-      { kind: "gui", count: 18, radius: 24, xCenter: 38, zCenter: -10 },
+      { kind: "gui", count: 48, radius: 70, xCenter: -40, zCenter: -4 },
+      { kind: "gui", count: 28, radius: 50, xCenter: 40, zCenter: 90 },
+      { kind: "gui", count: 28, radius: 50, xCenter: 30, zCenter: -80 },
     ],
     specimens: [
-      { kind: "sang", overlay: { glowSiZhao: true }, x: 8, z: 4, yaw: 0.4 },
-      { kind: "sang", overlay: { glowSiZhao: true }, x: 16, z: -6, yaw: 1.2 },
+      { kind: "sang", overlay: { glowSiZhao: true }, x: 70, z: 20, yaw: 0.4 },
+      { kind: "sang", overlay: { glowSiZhao: true }, x: 76, z: 16, yaw: 1.1 },
+      { kind: "sang", overlay: { glowSiZhao: true }, x: 64, z: 24, yaw: 2.0 },
+      { kind: "sang", overlay: { glowSiZhao: true }, x: 72, z: 28, yaw: 2.6 },
+      { kind: "sang", overlay: { glowSiZhao: true }, x: 68, z: 12, yaw: 3.2 },
     ],
-    zhuyu: { count: 28, minX: -72, spanX: 46, minZ: -18, spanZ: 40 },
+    zhuyu: { count: 12, minX: -58, spanX: 16, minZ: 4, spanZ: 16 },
   },
   {
     mountainId: "yuanyi",
     scatter: [
-      { kind: "sang", overlay: { strange: true }, count: 12, radius: 18, xCenter: 44, zCenter: 46 },
-      { kind: "sang", overlay: { strange: true }, count: 10, radius: 16, xCenter: 50, zCenter: -48 },
-      { kind: "sang", overlay: { strange: true }, count: 8, radius: 14, xCenter: 38, zCenter: 6 },
+      { kind: "sang", overlay: { strange: true }, count: 16, radius: 40, xCenter: 44, zCenter: -110 },
+      { kind: "sang", overlay: { strange: true }, count: 16, radius: 40, xCenter: 50, zCenter: 110 },
     ],
   },
   {
     mountainId: "qingqiu",
-    scatter: [],
+    scatter: [{ kind: "bai", count: 8, radius: 30, xCenter: 36, zCenter: 110 }],
   },
   {
     mountainId: "danxue",
-    scatter: [],
+    scatter: [{ kind: "tan", count: 6, radius: 24, xCenter: 80, zCenter: 40 }],
   },
   {
     mountainId: "ji-nanshan",
+    scatter: [{ kind: "song", count: 8, radius: 30, xCenter: 100, zCenter: -50 }],
+  },
+  {
+    mountainId: "fajiu",
+    scatter: [{ kind: "sang", count: 36, radius: 80, xCenter: 0, zCenter: 0 }],
+  },
+  { mountainId: "jingwei", scatter: [] },
+  { mountainId: "zhurong", scatter: [] },
+  { mountainId: "hundun", scatter: [] },
+  {
+    mountainId: "court",
     scatter: [],
+    specimens: [
+      { kind: "sang", x: 0, z: 30, yaw: 0.2 },
+      { kind: "sang", x: -16, z: 32, yaw: 1.1 },
+      { kind: "sang", x: 16, z: 32, yaw: 2.0 },
+    ],
+  },
+  {
+    mountainId: "buzhou",
+    scatter: [{ kind: "tao", count: 8, radius: 22, xCenter: 40, zCenter: 50 }],
+  },
+  {
+    mountainId: "kiln",
+    scatter: [{ kind: "tan", count: 6, radius: 12, xCenter: -18, zCenter: 10 }],
+  },
+  {
+    mountainId: "xiayi",
+    scatter: [{ kind: "liu", count: 12, radius: 28, xCenter: 8, zCenter: -6 }],
+  },
+  {
+    mountainId: "kunlun-qiu",
+    scatter: [
+      { kind: "tao", count: 22, radius: 45, xCenter: -8, zCenter: 50 },
+      { kind: "tao", count: 22, radius: 40, xCenter: 22, zCenter: -40 },
+    ],
+  },
+  {
+    mountainId: "kunlun-xu",
+    scatter: [{ kind: "bai", count: 10, radius: 24, xCenter: -24, zCenter: -50 }],
+    specimens: [
+      { kind: "yan", overlay: { lacquer: true }, x: -14, z: -60, yaw: 0.3 },
+      { kind: "yan", overlay: { lacquer: true }, x: -20, z: -65, yaw: 1.1 },
+      { kind: "yan", overlay: { glowSiZhao: true }, x: 10, z: -68, yaw: 2.0 },
+      { kind: "sang", overlay: { strange: true }, x: -8, z: -75, yaw: 0.8 },
+      { kind: "sang", overlay: { strange: true }, x: -10, z: -60, yaw: 1.6 },
+      { kind: "bai", x: 12, z: 90, yaw: 0.2 },
+      { kind: "bai", x: -12, z: 90, yaw: 1.1 },
+      { kind: "yan", x: 0, z: 102, yaw: 2.0 },
+      { kind: "yan", x: 0, z: 78, yaw: 2.8 },
+    ],
+  },
+  { mountainId: "yushan", scatter: [] },
+  { mountainId: "changyang", scatter: [] },
+  {
+    mountainId: "kuafu",
+    scatter: [
+      { kind: "tao", count: 40, radius: 70, xCenter: 62, zCenter: -42 },
+      { kind: "tao", count: 20, radius: 40, xCenter: 380, zCenter: -340 },
+    ],
+  },
+  {
+    mountainId: "heichi",
+    scatter: [{ kind: "yan", count: 4, radius: 12, xCenter: 16, zCenter: -24 }],
+  },
+  { mountainId: "tanggu", scatter: [] },
+  { mountainId: "ganyuan", scatter: [] },
+  {
+    mountainId: "liubo",
+    scatter: [{ kind: "sang", overlay: { strange: true }, count: 6, radius: 20, xCenter: -12, zCenter: 8 }],
   },
 ];

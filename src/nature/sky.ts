@@ -3,11 +3,9 @@ import type { Scene } from "three";
 import type { Quality } from "../quality";
 import { C } from "../style/palette";
 
-const REACH = 78;
-
 export function createSky(
   scene: Scene,
-  quality: Quality = "high",
+  _quality: Quality = "high",
 ): { group: Group; sun: DirectionalLight; update: (elapsed: number, camX?: number, camZ?: number) => void } {
   const group = new Group();
   scene.background = new Color(C.sky);
@@ -21,16 +19,7 @@ export function createSky(
   group.add(fill);
 
   const sun = new DirectionalLight(0xffd9a0, 1.12);
-  sun.castShadow = true;
-  const map = quality === "high" ? 1024 : 512;
-  sun.shadow.mapSize.set(map, map);
-  sun.shadow.camera.near = 4;
-  sun.shadow.camera.far = 220;
-  sun.shadow.camera.left = -REACH;
-  sun.shadow.camera.right = REACH;
-  sun.shadow.camera.top = REACH;
-  sun.shadow.camera.bottom = -REACH;
-  sun.shadow.bias = -0.0004;
+  sun.castShadow = false;
   group.add(sun);
   group.add(sun.target);
 
