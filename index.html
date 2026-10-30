@@ -1094,7 +1094,7 @@ import { installPlants } from './plants.js';
 import { installStructures } from './structures.js';
 import { installAnimals } from './animals.js';
 import { installCharacters } from './characters.js';
-import { installChimera } from './chimera.js?v=47';
+import { installChimera } from './chimera.js?v=48';
 
 // ═══════════════════════════════════════════════════════════
 // Editable terrain — 0.25 world-units per cell (smooth paths / sculpt curves)
@@ -6496,12 +6496,16 @@ function beastPanelsHtml(recipe) {
     <div class="btab-panel ${beastTab === 'nature' ? 'on' : ''}" data-panel="nature">
       <div class="group-label">特性</div>
       <div class="chimera-traits">${traits}</div>
+      <div class="group-label">行動</div>
+      <label class="check-row"><input type="checkbox" id="beast-stationary" ${r.stationary ? 'checked' : ''}/> 不移動（放入島上後停在原地）</label>
+      <label class="check-row"><input type="checkbox" id="beast-show-name" ${r.showName !== false ? 'checked' : ''}/> 顯示名稱（頭上）</label>
       <div class="group-label">其音如</div>
       <select id="beast-sound" style="width:100%;padding:8px;border-radius:6px;border:1px solid #3a3830;background:#1a1916;color:var(--bone);margin-bottom:8px">${soundOpts}</select>
       <div id="beast-sound-custom-wrap" style="display:${r.sound === 'custom' ? '' : 'none'}">
         <input type="text" id="beast-sound-custom" maxlength="16" value="${String(r.soundCustom || '').replace(/"/g, '&quot;')}"
           placeholder="如：嬰兒" style="width:100%;box-sizing:border-box;padding:6px 10px;border-radius:6px;border:1px solid #3a3830;background:#1a1916;color:var(--bone)"/>
       </div>
+      <p style="font-size:0.7rem;color:#8a8070;line-height:1.4;margin-top:10px">造好後按「存入圖鑑」或「放入島嶼」，再到島嶼工作區從下方「獸」欄拖出放置。</p>
     </div>`;
 }
 
@@ -6662,6 +6666,14 @@ function wireBeastPanelControls(root, recipe) {
       recipe.traits = [...set];
       commitBeastRecipe(false);
     });
+  });
+  root.querySelector('#beast-stationary')?.addEventListener('change', (e) => {
+    recipe.stationary = !!e.target.checked;
+    commitBeastRecipe(false);
+  });
+  root.querySelector('#beast-show-name')?.addEventListener('change', (e) => {
+    recipe.showName = !!e.target.checked;
+    commitBeastRecipe(false);
   });
   const soundSel = root.querySelector('#beast-sound');
   const soundWrap = root.querySelector('#beast-sound-custom-wrap');
@@ -6956,6 +6968,13 @@ function renderPropsObject(mesh) {
     addCheck('stationary', '不移動');
     addR('wanderRadius', '遊走半徑', 1, 24, 0.5);
     addNote('人物會在黃圈半徑內閒逛（邏輯與獸類相同，之後可加對話／互動）· 選取時暫停');
+  } else if (isChimera(type)) {
+    if (p.showName == null) p.showName = true;
+    if (p.stationary == null) p.stationary = false;
+    addCheck('showName', '顯示名稱（頭上）');
+    addCheck('stationary', '不移動');
+    addR('wanderRadius', '遊走半徑', 1, 24, 0.5);
+    addNote('自造異獸 · 「不移動」則停在放置點 · 選取時暫停遊走 · 可回「異獸」工作區改裝後再存入圖鑑');
   } else if (isMob(type)) {
     if (p.showName == null) p.showName = false;
     if (p.stationary == null) p.stationary = false;
