@@ -1099,7 +1099,7 @@ import {
   setRealTreeQuality,
   REAL_TREE_SPECS,
   isRealTreeType,
-} from './plants.js';
+} from './plants.js?v=trees26';
 import { installStructures } from './structures.js';
 import { installAnimals } from './animals.js';
 import { installCharacters } from './characters.js';
@@ -1202,7 +1202,8 @@ const HOTBAR_TABS = [
   { id: 'birds',   label: '禽',   hidden: true },
   { id: 'aqua',    label: '水族', hidden: true },
   { id: 'crawl',   label: '爬蟲', hidden: true },
-  { id: 'chars',   label: '人物', hidden: false },
+  // Character GLBs not on Pages yet — keep hidden so boot does not hang
+  { id: 'chars',   label: '人物', hidden: true },
   { id: 'decor',   label: '景物', hidden: true },
   { id: 'build',   label: '建築', hidden: true },
   { id: 'myth',    label: '神異', hidden: true },
