@@ -1090,7 +1090,16 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import { UnifiedTransformControls } from './unified-gizmo.js';
-import { installPlants } from './plants.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import {
+  installPlants,
+  preloadRealTrees,
+  preloadRemainingRealTrees,
+  realTreesReady,
+  setRealTreeQuality,
+  REAL_TREE_SPECS,
+  isRealTreeType,
+} from './plants.js';
 import { installStructures } from './structures.js';
 import { installAnimals } from './animals.js';
 import { installCharacters } from './characters.js';
@@ -1187,14 +1196,13 @@ function bindNameField(root, onCommit) {
 const HOTBAR_TABS = [
   { id: 'sculpt',  label: '手動塑形' },
   { id: 'terrain', label: '地形', hidden: true },
-  // Hidden while models are being replaced — presets + makers stay registered
-  { id: 'trees',   label: '木',   hidden: true },
-  { id: 'flowers', label: '草花', hidden: true },
+  { id: 'trees',   label: '木',   hidden: false },
+  { id: 'flowers', label: '草花', hidden: false },
   { id: 'beasts',  label: '獸',   hidden: false },
   { id: 'birds',   label: '禽',   hidden: true },
   { id: 'aqua',    label: '水族', hidden: true },
   { id: 'crawl',   label: '爬蟲', hidden: true },
-  { id: 'chars',   label: '人物', hidden: true },
+  { id: 'chars',   label: '人物', hidden: false },
   { id: 'decor',   label: '景物', hidden: true },
   { id: 'build',   label: '建築', hidden: true },
   { id: 'myth',    label: '神異', hidden: true },
@@ -1312,6 +1320,7 @@ function loadGfxSettings() {
   return { quality, style };
 }
 const gfx = loadGfxSettings();
+setRealTreeQuality(gfx.quality);
 function saveGfxSettings() {
   try { localStorage.setItem(GFX_KEY, JSON.stringify({ quality: gfx.quality, style: gfx.style })); } catch { /* ignore */ }
 }
@@ -7532,6 +7541,26 @@ function ensureThumb(type) {
   return thumbCache[type];
 }
 
+function invalidateRealTreeThumbs() {
+  for (const spec of REAL_TREE_SPECS) {
+    delete thumbCache[spec.type];
+  }
+}
+
+function refreshRealTreeThumbsAndHotbar() {
+  invalidateRealTreeThumbs();
+  if (state.hotbarTab === 'trees') rebuildHotbarSlots();
+}
+
+/** Rebuild every placed real tree after quality / GLB load changes. */
+function rebuildAllRealTrees() {
+  setRealTreeQuality(gfx.quality);
+  for (const o of state.objects) {
+    if (!isRealTreeType(o.type)) continue;
+    rebuildObjectMesh(o);
+  }
+}
+
 const hotbarTabsEl = document.getElementById('hotbar-tabs');
 HOTBAR_TABS.forEach((t) => {
   if (t.hidden) return;
@@ -9349,7 +9378,10 @@ document.getElementById('gfx-quality-seg')?.addEventListener('click', (e) => {
   gfx.quality = btn.dataset.quality;
   if (!GFX_QUALITY.has(gfx.quality)) gfx.quality = 'normal';
   saveGfxSettings();
+  setRealTreeQuality(gfx.quality);
   applyGraphicsSettings({ rebuildTerrain: false });
+  rebuildAllRealTrees();
+  refreshRealTreeThumbsAndHotbar();
   const qToast = {
     simple: '極簡渲染 · 陰影與動畫關閉',
     normal: '正常渲染 · 柔和陰影',
@@ -10296,25 +10328,24 @@ function warmThumbsForTab(tabId) {
 async function bootEditor() {
   setBootProgress(4, '準備場景…');
   await new Promise((r) => requestAnimationFrame(r));
-  // Characters tab is hidden — skip GLB preload (still available if tab re-enabled)
   const charsTab = HOTBAR_TABS.find((t) => t.id === 'chars');
   if (charsTab && !charsTab.hidden) {
     setBootProgress(8, '載入人物模型…');
     try {
       await CHARACTERS.preload((frac, label) => {
-        setBootProgress(8 + Math.round(frac * 42), label || '載入人物…');
+        setBootProgress(8 + Math.round(frac * 30), label || '載入人物…');
       });
     } catch (err) {
       console.error('Character preload failed', err);
       toast('人物模型載入失敗 · 請確認 characters/ 內的 GLB');
     }
   } else {
-    setBootProgress(48, '略過人物模型…');
+    setBootProgress(38, '略過人物模型…');
   }
-  setBootProgress(50, '載入異獸部件…');
+  setBootProgress(40, '載入異獸部件…');
   try {
     await CHIMERA.preloadParts((frac, label) => {
-      setBootProgress(50 + Math.round(frac * 8), label || '載入異獸部件…');
+      setBootProgress(40 + Math.round(frac * 6), label || '載入異獸部件…');
     });
   } catch (err) {
     console.error('Chimera part preload failed', err);
@@ -10323,31 +10354,59 @@ async function bootEditor() {
   loadBeastLibrary();
   setPlaySkin(loadSavedPlaySkin(), { silent: true });
   buildPlaySkinButtons();
-  setBootProgress(52, '升起島嶼…');
+  setBootProgress(48, '載入林木…');
+  try {
+    await preloadRealTrees(THREE, GLTFLoader, {
+      bootOnly: true,
+      onProgress: (pct, label) => setBootProgress(48 + Math.min(10, Math.round((pct - 18) * 1.2)), label || '載入林木…'),
+    });
+    rebuildAllRealTrees();
+    refreshRealTreeThumbsAndHotbar();
+  } catch (err) {
+    console.error('real tree preload failed', err);
+  }
+  setBootProgress(60, '升起島嶼…');
   createFeature('island', { texture: 'default' }, 0, 0);
   history.undo.length = 0;
   updateUndoButtons();
-  setBootProgress(62, '畫面設定…');
+  setBootProgress(68, '畫面設定…');
   applyGraphicsSettings({ rebuildTerrain: true });
-  setBootProgress(70, '繪製圖示…');
+  setBootProgress(74, '繪製圖示…');
   await warmThumbsForTab(state.hotbarTab);
   rebuildHotbarSlots();
   setBootProgress(96, '就緒');
   await new Promise((r) => requestAnimationFrame(r));
   hideBootScreen();
-  setWorkspace('beast');
+  setWorkspace('island');
   animate();
-  toast('異獸造物 · 可切換至島嶼');
-  // Warm remaining hotbar thumbs in the background (avoids first-tab hitch later)
+  toast('蓬莱筑境 · 木／草花／人物／異獸已就緒');
+  // Background: remaining trees + other hotbar thumbs
   (async () => {
+    try {
+      await preloadRemainingRealTrees(THREE, GLTFLoader, (label) => console.info(label));
+      rebuildAllRealTrees();
+      refreshRealTreeThumbsAndHotbar();
+      if (realTreesReady()) toast('松、柳、桑、柏已就緒');
+    } catch (err) {
+      console.warn('background tree load', err);
+    }
     for (const tab of HOTBAR_TABS) {
       if (tab.hidden || tab.id === state.hotbarTab) continue;
+      if (tab.id === 'trees') {
+        let waited = 0;
+        while (!realTreesReady() && waited < 180_000) {
+          await new Promise((r) => setTimeout(r, 400));
+          waited += 400;
+        }
+        invalidateRealTreeThumbs();
+      }
       const list = presetsForTab(tab.id);
       for (const pr of list) {
         if (thumbCache[pr.type]) continue;
         ensureThumb(pr.type);
         await new Promise((r) => requestAnimationFrame(r));
       }
+      if (tab.id === 'trees' && state.hotbarTab === 'trees') rebuildHotbarSlots();
     }
   })();
 }
